@@ -1,9 +1,6 @@
 import cv2
 import numpy as np
 
-#Create face dictionary
-facedict = {}
-
 #List of emotions to detect
 emotions = ["happy", "surprise"]
 
@@ -17,12 +14,15 @@ video_capture = cv2.VideoCapture(0)
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 
 #load the trained face haar cascade model
-haar_files = "haarcascade_face_detection\\"
+haar_files = "..\\haarcascade_face_detection\\"
 facecascade = cv2.CascadeClassifier(haar_files + "haarcascade_frontalface_default.xml")
 
 #load the trained emotion classifier model
 fishface = cv2.createFisherFaceRecognizer()
 fishface.load("fishface_happy_surprise.xml")
+
+#Create face dictionary
+facedict = {}
 
 #Crop the given face
 def crop_face(clahe_image, face):
@@ -37,10 +37,11 @@ def recognize_emotion():
 	predictions = []
 	confidence = []
 	for x in facedict.keys():
-		pred, conf = fishface.predict(facedict[x])
+		pred, conf = fishface.predict(facedict[x]) 
 		predictions.append(pred)
 		confidence.append(conf)
-	print("The detected emotion is %s" %emotions[max(set(predictions), key=predictions.count)])
+        print "max(): %s" %max(set(predictions), key=predictions.count)
+        print("The detected emotion is: %s" %emotions[max(set(predictions), key=predictions.count)])
 
 while True:
 	#Grab frame from webcam. Ret is 'true' if the frame was successfully grabbed.
@@ -62,7 +63,7 @@ while True:
 	#Run the emotion recognizer when 10 faces are collected
 	if len(facedict) == 10:
 		recognize_emotion()
-		break
+		# break
 
 	#Draw rectangle around detected faces
 	for (x, y, w, h) in face:
