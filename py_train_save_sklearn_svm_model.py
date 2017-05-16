@@ -19,8 +19,8 @@ Mani experimenting with facial information extraction.
 @applications 1. Enhancing the multiple object detection in Computer Vision field.
               2. Capturing a moment in the time based on the extracted information
                  and applying auto filters to enhace the image.
-@see <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
-      Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV</a>
+@Based on <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
+           Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV</a>
 """
 
 # Complete emotions lists:
