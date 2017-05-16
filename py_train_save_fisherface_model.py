@@ -3,22 +3,25 @@ import glob
 import random
 import numpy as np
 
-#Change from:
-#emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"] #Emotion list
+# Change from:
+# emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy",
+# "sadness", "surprise"] #Emotion list
 
-#To:
+# To:
 emotions = ["happy", "surprise"]
 
-fishface = cv2.createFisherFaceRecognizer() #Initialize fisher face classifier
+fishface = cv2.createFisherFaceRecognizer()  # Initialize fisher face classifier
 
 data = {}
 
-def get_files(emotion): #Define function to get file list, randomly shuffle it and split 80/20
-    files = glob.glob("dataset\\%s\\*" %emotion)
+
+def get_files(emotion):  # Define function to get file list, randomly shuffle it and split 80/20
+    files = glob.glob("dataset\\%s\\*" % emotion)
     random.shuffle(files)
-    training = files[:int(len(files)*0.8)] #get first 80% of file list
-    prediction = files[-int(len(files)*0.2):] #get last 20% of file list
+    training = files[:int(len(files) * 0.8)]  # get first 80% of file list
+    prediction = files[-int(len(files) * 0.2):]  # get last 20% of file list
     return training, prediction
+
 
 def make_sets():
     training_data = []
@@ -27,14 +30,16 @@ def make_sets():
     prediction_labels = []
     for emotion in emotions:
         training, prediction = get_files(emotion)
-        #Append data to training and prediction list, and generate labels 0-7
+        # Append data to training and prediction list, and generate labels 0-7
         for item in training:
-            image = cv2.imread(item) #open image
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #convert to grayscale
-            training_data.append(gray) #append image array to training data list
+            image = cv2.imread(item)  # open image
+            # convert to grayscale
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            # append image array to training data list
+            training_data.append(gray)
             training_labels.append(emotions.index(emotion))
-    
-        for item in prediction: #repeat above process for prediction set
+
+        for item in prediction:  # repeat above process for prediction set
             image = cv2.imread(item)
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             prediction_data.append(gray)
@@ -42,15 +47,16 @@ def make_sets():
 
     return training_data, training_labels, prediction_data, prediction_labels
 
+
 def run_recognizer():
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
-    
+
     print "\ttraining fisher face classifier"
     print "\tsize of training set is:", len(training_labels), "images"
     fishface.train(training_data, np.asarray(training_labels))
 
-    #print "\t--> Saving the trained model to xml file"
-    #fishface.save("fishface_happy_surprise.xml")
+    # print "\t--> Saving the trained model to xml file"
+    # fishface.save("fishface_happy_surprise.xml")
 
     print "\tpredicting classification set"
     cnt = 0
@@ -61,13 +67,14 @@ def run_recognizer():
         if pred == prediction_labels[cnt]:
             correct += 1
             cnt += 1
-            #print "\t\t--> Correct prediction, emotion:", pred
+            # print "\t\t--> Correct prediction, emotion:", pred
         else:
             incorrect += 1
             cnt += 1
-    return ((100*correct)/(correct + incorrect))
+    return ((100 * correct) / (correct + incorrect))
 
-#Now run it
+
+# Now run it
 metascore = []
 for i in range(0, 1):
     correct = run_recognizer()

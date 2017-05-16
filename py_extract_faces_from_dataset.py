@@ -3,28 +3,41 @@ import glob
 
 haar_files = "haarcascade_face_detection\\"
 
-faceDet1 = cv2.CascadeClassifier(haar_files + "haarcascade_frontalface_default.xml")
-faceDet2 = cv2.CascadeClassifier(haar_files + "haarcascade_frontalface_alt2.xml")
-faceDet3 = cv2.CascadeClassifier(haar_files + "haarcascade_frontalface_alt.xml")
-faceDet4 = cv2.CascadeClassifier(haar_files + "haarcascade_frontalface_alt_tree.xml")
+faceDet1 = cv2.CascadeClassifier(
+    haar_files + "haarcascade_frontalface_default.xml")
+faceDet2 = cv2.CascadeClassifier(
+    haar_files + "haarcascade_frontalface_alt2.xml")
+faceDet3 = cv2.CascadeClassifier(
+    haar_files + "haarcascade_frontalface_alt.xml")
+faceDet4 = cv2.CascadeClassifier(
+    haar_files + "haarcascade_frontalface_alt_tree.xml")
 
-emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"] #Define emotions
+emotions = ["neutral", "anger", "contempt", "disgust",
+            "fear", "happy", "sadness", "surprise"]  # Define emotions
+
 
 def detect_faces(emotion):
-    files = glob.glob("sorted_set\\%s\\*" %emotion) #Get list of all images with emotion
+    # Get list of all images with emotion
+    files = glob.glob("sorted_set\\%s\\*" % emotion)
 
     filenumber = 0
     for f in files:
-        frame = cv2.imread(f) #Open image
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #Convert image to grayscale
-        
-        #Detect face using 4 different classifiers
-        face1 = faceDet1.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face2 = faceDet2.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face3 = faceDet3.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face4 = faceDet4.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        frame = cv2.imread(f)  # Open image
+        # Convert image to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        #Go over detected faces, stop at first detected face, return empty if no face.
+        # Detect face using 4 different classifiers
+        face1 = faceDet1.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face2 = faceDet2.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face3 = faceDet3.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face4 = faceDet4.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+
+        # Go over detected faces, stop at first detected face, return empty if
+        # no face.
         if len(face1) == 1:
             facefeatures = face1
         elif len(face2) == 1:
@@ -35,18 +48,21 @@ def detect_faces(emotion):
             facefeatures = face4
         else:
             facefeatures = ""
-        
-        #Cut and save face
-        for (x, y, w, h) in facefeatures: #get coordinates and size of rectangle containing face
-            print "face found in file: %s" %f
-            gray = gray[y:y+h, x:x+w] #Cut the frame to size
-            
-            try:
-                out = cv2.resize(gray, (350, 350)) #Resize face so all images have same size
-                cv2.imwrite("dataset\\%s\\%s.jpg" %(emotion, filenumber), out) #Write image
-            except:
-               pass #If error, pass file
-        filenumber += 1 #Increment image number
 
-for emotion in emotions: 
-    detect_faces(emotion) #Call functiona
+        # Cut and save face
+        for (x, y, w, h) in facefeatures:  # get coordinates and size of rectangle containing face
+            print "face found in file: %s" % f
+            gray = gray[y:y + h, x:x + w]  # Cut the frame to size
+
+            try:
+                # Resize face so all images have same size
+                out = cv2.resize(gray, (350, 350))
+                cv2.imwrite("dataset\\%s\\%s.jpg" %
+                            (emotion, filenumber), out)  # Write image
+            except:
+                pass  # If error, pass file
+        filenumber += 1  # Increment image number
+
+
+for emotion in emotions:
+    detect_faces(emotion)  # Call functiona
