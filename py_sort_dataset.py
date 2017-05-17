@@ -1,5 +1,6 @@
 """
 Mani experimenting with facial information extraction.
+
 @purpose:      To extract all possible information from an image
                and present it in json or xml format for further processing.
 @applications: 1. Enhancing the multiple object detection in Computer Vision field.
@@ -13,7 +14,7 @@ Mani experimenting with facial information extraction.
 import glob
 from shutil import copyfile
 
-# No need modify this one as it is a helper script.
+# No need to modify this one as it is a helper script.
 __version__ = "1.0, 01/04/2016"
 __author__ = "Paul van Gent, 2016"
 
