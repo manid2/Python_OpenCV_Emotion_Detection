@@ -1,3 +1,16 @@
+"""
+Mani experimenting with facial information extraction.
+
+@purpose:      To extract all possible information from an image
+               and present it in json or xml format for further processing.
+@applications: 1. Enhancing the multiple object detection in Computer Vision field.
+               2. Capturing a moment in the time based on the extracted information
+                  and applying auto filters to enhace the image.
+@Based on: <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
+              Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV
+           </a>
+"""
+
 import cv2
 import glob
 import random
@@ -10,18 +23,6 @@ from sklearn.svm import SVC
 # Experimenting with the actual method used in the tutorial
 __version__ = "1.0, 16/5/2017"
 __author__ = "Mani Kumar D A"
-
-"""
-Mani experimenting with facial information extraction.
-
-@purpose To extract all possible information from an image
-          and present it in json or xml format for further processing.
-@applications 1. Enhancing the multiple object detection in Computer Vision field.
-              2. Capturing a moment in the time based on the extracted information
-                 and applying auto filters to enhace the image.
-@Based on <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
-           Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV</a>
-"""
 
 # Complete emotions lists:
 #emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"]
