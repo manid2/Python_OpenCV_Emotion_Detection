@@ -1,5 +1,21 @@
+"""
+Mani experimenting with facial information extraction.
+@purpose:      To extract all possible information from an image
+               and present it in json or xml format for further processing.
+@applications: 1. Enhancing the multiple object detection in Computer Vision field.
+               2. Capturing a moment in the time based on the extracted information
+                  and applying auto filters to enhace the image.
+@Based on: <a href="http://www.paulvangent.com/2016/04/01/emotion-recognition-with-python-opencv-and-a-face-dataset/">
+              Emotion Recognition With Python, OpenCV and a Face Dataset
+           </a>
+"""
+
 import cv2
 import numpy as np
+
+# Modified to load the fisherface model trained on two emotions.
+__version__ = "1.1, 017/05/2017"
+__author__ = "Paul van Gent 2016, Mani Kumar D A 2017"
 
 # List of emotions to detect
 emotions = ["happy", "surprise"]
@@ -26,8 +42,6 @@ fishface.load("fishface_happy_surprise.xml")
 facedict = {}
 
 # Crop the given face
-
-
 def crop_face(clahe_image, face):
     for (x, y, w, h) in face:
         faceslice = clahe_image[y:y + h, x:x + w]
