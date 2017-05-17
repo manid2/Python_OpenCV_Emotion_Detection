@@ -21,8 +21,8 @@ import itertools
 from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
-__version__ = "1.0, 16/5/2017"
-__author__ = "Mani Kumar D A"
+__version__ = "1.0, 17/05/2017"
+__author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # Complete emotions lists:
 #emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"]
