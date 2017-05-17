@@ -1,6 +1,21 @@
-# Import required modules
+"""
+Mani experimenting with facial information extraction.
+@purpose:      To extract all possible information from an image
+               and present it in json or xml format for further processing.
+@applications: 1. Enhancing the multiple object detection in Computer Vision field.
+               2. Capturing a moment in the time based on the extracted information
+                  and applying auto filters to enhace the image.
+@Based on: <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
+              Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV
+           </a>
+"""
+
 import cv2
 import dlib
+
+# No need to modify this one as it is a helper script.
+__version__ = "1.0, 17/05/2017"
+__author__ = "Paul van Gent - 2016"
 
 # Set up some required objects
 video_capture = cv2.VideoCapture(0)  # Webcam object
