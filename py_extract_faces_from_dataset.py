@@ -14,7 +14,7 @@ import cv2
 import glob
 
 # No need modify this one as it is a helper script.
-__version__ = "1.0, 08/05/2016"
+__version__ = "1.0, 01/04/2016"
 __author__ = "Paul van Gent, 2016"
 
 haar_files = "haarcascade_face_detection\\"
