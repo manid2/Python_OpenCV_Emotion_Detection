@@ -1,5 +1,6 @@
 """
 Mani experimenting with facial information extraction.
+
 @purpose:      To extract all possible information from an image
                and present it in json or xml format for further processing.
 @applications: 1. Enhancing the multiple object detection in Computer Vision field.
