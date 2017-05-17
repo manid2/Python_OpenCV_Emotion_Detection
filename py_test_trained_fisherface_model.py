@@ -14,8 +14,8 @@ import cv2
 import numpy as np
 
 # Modified to load the fisherface model trained on two emotions.
-__version__ = "1.1, 017/05/2017"
-__author__ = "Paul van Gent 2016, Mani Kumar D A 2017"
+__version__ = "1.1, 17/05/2017"
+__author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # List of emotions to detect
 emotions = ["happy", "surprise"]
