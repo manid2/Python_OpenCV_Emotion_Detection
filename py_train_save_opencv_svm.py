@@ -34,12 +34,7 @@ clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("..\\shape_predictor_68_face_landmarks.dat")
 
-# Set the classifier as a support vector machines with polynomial kernel
-clf = SVC(kernel='linear', probability=True, tol=1e-3)
-
 # Define function to get file list, randomly shuffle it and split 80/20
-
-
 def get_files(emotion):
     files = glob.glob("..\\dataset\\%s\\*" % emotion)
     random.shuffle(files)
@@ -59,7 +54,7 @@ def get_landmarks(image):
 
     # For all detected face instances individually
     for k, d in enumerate(detections):
-        # Draw Facial Landmarks with the predictor class\
+        # Draw Facial Landmarks with the predictor class
         shape = predictor(image, d)
         xlist = []
         ylist = []
@@ -148,9 +143,12 @@ def make_sets():
 
     return training_data, training_labels, prediction_data, prediction_labels
 
+# Set the classifier as a opencv svm with SVM_LINEAR kernel
+svm = cv2.SVM()
+svm_params = dict( kernel_type = cv2.SVM_LINEAR, svm_type = cv2.SVM_C_SVC, C=2.67, gamma=5.383 )
 
 accur_lin = []
-for i in range(0, 5):
+for i in range(0, 1):
     # Make sets by random sampling 80/20%
     print("Making sets %s" % i)
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
@@ -159,15 +157,19 @@ for i in range(0, 5):
     npar_train = np.array(training_data)
     npar_trainlabs = np.array(training_labels)
 
-    # Train SVM
+    # Train opencv SVM here.
     print("training SVM linear %s" % i)
-    clf.fit(npar_train, training_labels)
+    # clf.fit(npar_train, training_labels)
+    svm.train(npar_train, npar_trainlabs, params=svm_params)
+    svm.save('opencv_facial_landmarks.dat')
 
+    '''
     # Use score() function to get accuracy
     print("getting accuracies %s" % i)
     npar_pred = np.array(prediction_data)
     pred_lin = clf.score(npar_pred, prediction_labels)
     print "linear: ", pred_lin
+    '''
 
     # Store accuracy in a list
     accur_lin.append(pred_lin)
