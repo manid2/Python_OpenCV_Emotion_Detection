@@ -60,7 +60,7 @@ def get_landmarks(claheImage):
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
 		
-	xCoordinatesList = []
+		xCoordinatesList = []
         yCoordinatesList = []
 
         # Store the X and Y coordinates of landmark points in two lists
@@ -94,14 +94,14 @@ def get_landmarks(claheImage):
         else:
             anglenose -= 90
 		
-	landmarkVectorList = []
+		landmarkVectorList = []
         for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,							   
-						xCoordinatesList, yCoordinatesList):							  
+							                    xCoordinatesList, yCoordinatesList):							  
             landmarkVectorList.append(xdist)
             landmarkVectorList.append(ydist)
             			
             xyCoordArray = np.asarray((ycoord, xcoord))
-	    xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
+			xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
 			
             dist = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
             radians2 = math.atan((ycoord - yCoordMean) / (xcoord - xCoordMean))
@@ -126,7 +126,7 @@ def make_sets():
         for item in training:
             image = cv2.imread(item)  # open image
             gray = cv2.cvtColor(
-            image, cv2.COLOR_BGR2GRAY)  # convert to grayscale
+                image, cv2.COLOR_BGR2GRAY)  # convert to grayscale
             clahe_image = claheObject.apply(gray)
             landmarkVectorList = get_landmarks(clahe_image)
             if landmarkVectorList == "error":
