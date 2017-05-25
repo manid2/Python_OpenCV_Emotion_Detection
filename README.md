@@ -5,5 +5,6 @@ Developing using a set of tutorials from the following link:
 
 [Pual Van Gent](http://www.paulvangent.com/).
 
-## TODO
-Remove the scikit-learn SVM and use the SVM in OpenCV library to make the code portable.
+## TO DO
+Need to correct the following error in py_train_save_opencv_svm.py.
+"OpenCV Error: Bad argument (train data must be floating-point matrix) in cvCheckTrainData"
