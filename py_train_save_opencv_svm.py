@@ -18,7 +18,7 @@ import math
 import numpy as np
 import dlib
 import itertools
-from sklearn.svm import SVC
+# from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
 __version__ = "1.1, 25/05/2017"
