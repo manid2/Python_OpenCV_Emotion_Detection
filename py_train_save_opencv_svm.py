@@ -96,18 +96,22 @@ def get_landmarks(claheImage):
 		
 	landmarkVectorList = []
         for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,							   
-						xCoordinatesList, yCoordinatesList):							  
+						xCoordinatesList, yCoordinatesList):
+	    '''
+	    # Mani - removing the individaul distance between the xyPoint coordinates
+	    # and the centerPoint coordinates from feature vector.
             landmarkVectorList.append(xdist)
             landmarkVectorList.append(ydist)
+	    '''
             			
             xyCoordArray = np.asarray((ycoord, xcoord))
 	    xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
 			
-            dist = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
+            pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
             radians2 = math.atan((ycoord - yCoordMean) / (xcoord - xCoordMean))
-            anglerelative = radians2 * rad2degConvtFactor - anglenose
-            landmarkVectorList.append(dist)
-            landmarkVectorList.append(anglerelative)
+            pointAngle = radians2 * rad2degConvtFactor - anglenose
+            landmarkVectorList.append(pointDistance)
+            landmarkVectorList.append(pointAngle)
 
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
