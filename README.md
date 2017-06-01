@@ -6,16 +6,26 @@ Developing using a set of tutorials from the following link:
 [Pual Van Gent](http://www.paulvangent.com/).
 
 ## TO DO
-### Corrected the error:
+#### Found the solution for the error:
 "OpenCV Error: Bad argument (train data must be floating-point matrix) in cvCheckTrainData"
 
-### Solution:
+#### Solution:
 Use "trainingData.convertTo(trainingData, CvType.CV_32FC1)"
 
-### Pending - representation of trainData
+
+#### Current trainData representation
+```
+type of npArrTrainData        = <type 'numpy.ndarray'>,
+type of npArrTrainData[0]     = <type 'numpy.ndarray'>,
+type of npArrTrainData[0][0]  = <type 'numpy.float64'>
+```
+
+#### Pending - representation of trainData
 Four ways to represent the trainData:
+```
 1. trainData [68] [3] = {x1, y1, ang1,
                          x2, y2, ang2,
+			 x3, y3, ang3,
                          ...
                          x68, y68, ang68
                          };
@@ -23,18 +33,14 @@ Four ways to represent the trainData:
                           y1, y2, u3, ... , y68,
                           ang1, ang2, ang3, ... , ang68
                         };
-3. trainData [68] [2] = { euclPxyCenterDist1, euclPxyCenterDist2, ... euclPxyCenterDist68,
+3. trainData [68] [2] = { euclDist1, euclDist2, euclDist3 ... euclDist68,
                           ang1, ang2, ang3, ... , ang68
                         };
-4. trainData [2] [68] = { euclPxyCenterDist1, ang1,
-                          euclPxyCenterDist2, ang2,
+4. trainData [2] [68] = { euclDist1, ang1,
+                          euclDist2, ang2,
+			  euclDist3, ang3,
                           ...
-                          euclPxyCenterDist68, ang68
+                          euclDist68, ang68
                         };
-						
-### Current trainData representation
-type of npArrTrainData        = <type 'numpy.ndarray'>, 
-type of npArrTrainData[0]     = <type 'numpy.ndarray'>, 
-type of npArrTrainData[0][0]  = <type 'numpy.float64'>
-
+```
 
