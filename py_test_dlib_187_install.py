@@ -43,5 +43,6 @@ while True:
 
     cv2.imshow("image", frame)  # Display the frame
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # Exit program when the user presses 'q'
+    if cv2.waitKey(1) & 0xFF == ord(
+            'q'):  # Exit program when the user presses 'q'
         break

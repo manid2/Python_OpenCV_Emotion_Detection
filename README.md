@@ -31,5 +31,10 @@ Four ways to represent the trainData:
                           ...
                           euclPxyCenterDist68, ang68
                         };
+						
+### Current trainData representation
+type of npArrTrainData        = <type 'numpy.ndarray'>, 
+type of npArrTrainData[0]     = <type 'numpy.ndarray'>, 
+type of npArrTrainData[0][0]  = <type 'numpy.float64'>
 
 

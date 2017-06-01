@@ -43,6 +43,8 @@ fishface.load("fishface_happy_surprise.xml")
 facedict = {}
 
 # Crop the given face
+
+
 def crop_face(clahe_image, face):
     for (x, y, w, h) in face:
         faceslice = clahe_image[y:y + h, x:x + w]
@@ -76,8 +78,9 @@ while True:
     clahe_image = clahe.apply(gray)
 
     # Run classifier on frame
-    face = facecascade.detectMultiScale(clahe_image, scaleFactor=1.1, minNeighbors=15, minSize=(
-        10, 10), flags=cv2.CASCADE_SCALE_IMAGE)
+    face = facecascade.detectMultiScale(
+        clahe_image, scaleFactor=1.1, minNeighbors=15, minSize=(
+            10, 10), flags=cv2.CASCADE_SCALE_IMAGE)
 
     # Use simple check if one face is detected, or multiple (measurement error
     # unless multiple persons on image)

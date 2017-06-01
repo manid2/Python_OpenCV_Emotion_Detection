@@ -21,21 +21,21 @@ import itertools
 # from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
-__version__ = "1.1, 25/05/2017"
+__version__ = "1.1, 01/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # Complete emotions lists:
 # emotionsList = ["neutral", "anger", "contempt", "disgust", "fear",
 # "happy", "sadness", "surprise"]
 
-# Most important - positive emotions:
-emotionsList = ["happy", "surprise"]
+# Training happy against neutral.
+emotionsList = ["neutral", "surprise"]
 
 claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
-                       "..\\shape_predictor_68_face_landmarks.dat")
+    "..\\shape_predictor_68_face_landmarks.dat")
 
 
 # Define function to get file list, randomly shuffle it and split 80/20
@@ -59,59 +59,68 @@ def get_landmarks(claheImage):
 
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
-		
-	xCoordinatesList = []
+
+        xCoordinatesList = []
         yCoordinatesList = []
 
         # Store the X and Y coordinates of landmark points in two lists
-        for i in range(1, 68):
-            xCoordinatesList.append(float(facialShape.part(i).x))
-            yCoordinatesList.append(float(facialShape.part(i).y))
+        for i in range(0, 68):
+            xCoordinatesList.append(facialShape.part(i).x)
+            yCoordinatesList.append(facialShape.part(i).y)
 
         # Get the mean of both axes to determine centre of gravity
         xCoordMean = np.mean(xCoordinatesList)
         yCoordMean = np.mean(yCoordinatesList)
 
-        # Get distance between each point and the central point in both axes
+        '''
+	# Mani - removing point coordinates distances
+	# Get distance between each point and the central point in both axes
         xDistFromCentre = [(x - xCoordMean) for x in xCoordinatesList]
         yDistFromCentre = [(y - yCoordMean) for y in yCoordinatesList]
+	'''
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
         if xCoordinatesList[26] == xCoordinatesList[29]:
-            anglenose = 0
+            noseBridgeAngleOffset = 0
         else:
-            # anglenose = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
-			#                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
+            # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
+                        #                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
             radians1 = math.atan(
-                       (yCoordinatesList[26] - yCoordinatesList[29]) /
-                       (xCoordinatesList[26] - xCoordinatesList[29]))
+                (yCoordinatesList[26] - yCoordinatesList[29]) /
+                (xCoordinatesList[26] - xCoordinatesList[29]))
             # since degrees = radians * rad2degConvtFactor
-            anglenose = int(radians1 * rad2degConvtFactor)
+            noseBridgeAngleOffset = int(radians1 * rad2degConvtFactor)
 
-        if anglenose < 0:
-            anglenose += 90
+        if noseBridgeAngleOffset < 0:
+            noseBridgeAngleOffset += 90
         else:
-            anglenose -= 90
-		
-	landmarkVectorList = []
-        for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,							   
+            noseBridgeAngleOffset -= 90
+
+        landmarkVectorList = []
+
+        '''
+	# Mani - removing point coordinates distances
+        for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,
 						xCoordinatesList, yCoordinatesList):
-	    '''
-	    # Mani - removing the individaul distance between the xyPoint coordinates
-	    # and the centerPoint coordinates from feature vector.
+	'''
+        for xcoord, ycoord in zip(xCoordinatesList, yCoordinatesList):
+
+            '''
+            # Mani - removing point coordinates distances
             landmarkVectorList.append(xdist)
             landmarkVectorList.append(ydist)
-	    '''
-            			
+            '''
+
             xyCoordArray = np.asarray((ycoord, xcoord))
-	    xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
-			
+            xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
+
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
             radians2 = math.atan((ycoord - yCoordMean) / (xcoord - xCoordMean))
-            pointAngle = radians2 * rad2degConvtFactor - anglenose
-            landmarkVectorList.append(pointDistance)
-            landmarkVectorList.append(pointAngle)
+            pointAngle = (radians2 * rad2degConvtFactor) - \
+                noseBridgeAngleOffset
+            landmarkVectorList.append(float(pointDistance))
+            landmarkVectorList.append(float(pointAngle))
 
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
@@ -128,9 +137,9 @@ def make_sets():
 
         # Append data to training and prediction list, and generate labels 0-7
         for item in training:
-            image = cv2.imread(item)  # open image
+            image = cv2.imread(item)  # read image
             gray = cv2.cvtColor(
-            image, cv2.COLOR_BGR2GRAY)  # convert to grayscale
+                image, cv2.COLOR_BGR2GRAY)  # convert to grayscale
             clahe_image = claheObject.apply(gray)
             landmarkVectorList = get_landmarks(clahe_image)
             if landmarkVectorList == "error":
@@ -169,14 +178,14 @@ for i in range(0, 1):
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     # Turn the training set into a numpy array for the classifier
-    npar_train = np.array(training_data)
-    npar_trainlabs = np.array(training_labels)
+    npArrTrainData = np.array(training_data)
+    npArrTrainLabels = np.array(training_labels)
 
     # Train opencv SVM here.
     print("training SVM linear %s" % i)
-    # clf.fit(npar_train, training_labels)
-    svm.train(npar_train, npar_trainlabs, params=svm_params)
-    svm.save('opencv_facial_landmarks.dat')
+    # clf.fit(npArrTrainData, training_labels)
+    svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)
+    svm.save('cv2_svm_surprise_facial_landmarks.dat')
 
     '''
     # Use score() function to get accuracy

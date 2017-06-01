@@ -44,14 +44,18 @@ def detect_faces(emotion):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Detect face using 4 different classifiers
-        face1 = faceDet1.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
-            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face2 = faceDet2.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
-            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face3 = faceDet3.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
-            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
-        face4 = faceDet4.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(
-            5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face1 = faceDet1.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+                5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face2 = faceDet2.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+                5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face3 = faceDet3.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+                5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
+        face4 = faceDet4.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=10, minSize=(
+                5, 5), flags=cv2.CASCADE_SCALE_IMAGE)
 
         # Go over detected faces, stop at first detected face, return empty if
         # no face.
@@ -67,7 +71,11 @@ def detect_faces(emotion):
             facefeatures = ""
 
         # Cut and save face
-        for (x, y, w, h) in facefeatures:  # get coordinates and size of rectangle containing face
+        for (
+            x,
+            y,
+            w,
+                h) in facefeatures:  # get coordinates and size of rectangle containing face
             print "face found in file: %s" % f
             gray = gray[y:y + h, x:x + w]  # Cut the frame to size
 
@@ -76,7 +84,7 @@ def detect_faces(emotion):
                 out = cv2.resize(gray, (350, 350))
                 cv2.imwrite("dataset\\%s\\%s.jpg" %
                             (emotion, filenumber), out)  # Write image
-            except:
+            except BaseException:
                 pass  # If error, pass file
         filenumber += 1  # Increment image number
 
