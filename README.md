@@ -13,7 +13,7 @@ Developing using a set of tutorials from the following link:
 Use "trainingData.convertTo(trainingData, CvType.CV_32FC1)"
 
 ### Pending - representation of trainData
-Three ways to represent the trainData:
+Four ways to represent the trainData:
 1. trainData [68] [3] = {x1, y1, ang1,
                          x2, y2, ang2,
                          ...
