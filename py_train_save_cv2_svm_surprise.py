@@ -178,8 +178,8 @@ for i in range(0, 1):
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     # Turn the training set into a numpy array for the classifier
-    npArrTrainData = np.array(training_data)
-    npArrTrainLabels = np.array(training_labels)
+    npArrTrainData = np.array(training_data, dtype=float32)
+    npArrTrainLabels = np.array(training_labels, dtype=int32)
 
     # Train opencv SVM here.
     print("training SVM linear %s" % i)
