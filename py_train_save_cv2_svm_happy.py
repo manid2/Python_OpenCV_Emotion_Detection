@@ -17,7 +17,7 @@ import random
 import math
 import numpy as np
 import dlib
-import itertools
+# import itertools
 # from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
@@ -55,7 +55,7 @@ def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
 
     # For all detected face instances individually
-    for faceCount, detectedFace in enumerate(detectedFaces):
+    for detectedFace in enumerate(detectedFaces):
 
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
@@ -177,15 +177,15 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-accur_lin = []
+# accur_lin = []
 for i in range(0, 1):
     # Make sets by random sampling 80/20%
     print("Making sets %s" % i)
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     # Turn the training set into a numpy array for the classifier
-    npArrTrainData = np.array(training_data, dtype=float32)
-    npArrTrainLabels = np.array(training_labels, dtype=int32)
+    npArrTrainData = np.array(training_data)
+    npArrTrainLabels = np.array(training_labels)
 
     print "type of npArrTrainData = {0}, type of npArrTrainData[0] = {1}, type of npArrTrainData[0][0] = {2}".format(
         type(npArrTrainData), type(npArrTrainData[0]), type(npArrTrainData[0][0]))
@@ -205,7 +205,7 @@ for i in range(0, 1):
     '''
 
     # Store accuracy in a list
-    accur_lin.append(pred_lin)
+    # accur_lin.append(pred_lin)
 
 # Get mean accuracy of the i runs
-print("Mean value lin svm: %.3f" % np.mean(accur_lin))
+# print("Mean value lin svm: %.3f" % np.mean(accur_lin))
