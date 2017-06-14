@@ -29,13 +29,13 @@ __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 # "happy", "sadness", "surprise"]
 
 # Training happy against neutral.
-emotionsList = ["neutral", "happy"]
+emotionsList = ["happy", "neutral"]
 
 claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
-    "..\\shape_predictor_68_face_landmarks.dat")
+    "..\\input\\shape_predictor_68_face_landmarks.dat")
 
 
 # Define function to get file list, randomly shuffle it and split 80/20
@@ -48,7 +48,7 @@ def get_files(emotion):
 
 
 # Constant factor to convert radians to degrees.
-rad2degConvtFactor = 180 / math.pi
+rad2degCnvtFactor = 180 / math.pi
 
 
 def get_landmarks(claheImage):
@@ -73,24 +73,23 @@ def get_landmarks(claheImage):
         yCoordMean = np.mean(yCoordinatesList)
 
         '''
-	# Mani - removing point coordinates distances
-	# Get distance between each point and the central point in both axes
+	    # Mani - removing point coordinates distances
+	    # Get distance between each point and the central point in both axes
         xDistFromCentre = [(x - xCoordMean) for x in xCoordinatesList]
         yDistFromCentre = [(y - yCoordMean) for y in yCoordinatesList]
-	'''
+	    '''
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
         if xCoordinatesList[26] == xCoordinatesList[29]:
             noseBridgeAngleOffset = 0
         else:
-            # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
-                        #                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
-            radians1 = math.atan(
-                (yCoordinatesList[26] - yCoordinatesList[29]) /
-                (xCoordinatesList[26] - xCoordinatesList[29]))
-            # since degrees = radians * rad2degConvtFactor
-            noseBridgeAngleOffset = int(radians1 * rad2degConvtFactor)
+            # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29]) /
+            #                            (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
+            radians1 = math.atan( (yCoordinatesList[26] - yCoordinatesList[29]) /                
+                                  (xCoordinatesList[26] - xCoordinatesList[29]) )
+            # since degrees = radians * rad2degCnvtFactor
+            noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
 
         if noseBridgeAngleOffset < 0:
             noseBridgeAngleOffset += 90
@@ -100,10 +99,11 @@ def get_landmarks(claheImage):
         landmarkVectorList = []
 
         '''
-	# Mani - removing point coordinates distances
+	    # Mani - removing point coordinates distances
         for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,
 						xCoordinatesList, yCoordinatesList):
-	'''
+	    '''
+        
         for xcoord, ycoord in zip(xCoordinatesList, yCoordinatesList):
 
             '''
@@ -123,10 +123,9 @@ def get_landmarks(claheImage):
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
 
-            pointAngle = (radians2 * rad2degConvtFactor) - \
-                noseBridgeAngleOffset
-            landmarkVectorList.append(float(pointDistance))
-            landmarkVectorList.append(float(pointAngle))
+            pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset                
+            landmarkVectorList.append(pointDistance)
+            landmarkVectorList.append(pointAngle)
 
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
@@ -184,11 +183,12 @@ for i in range(0, 1):
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     # Turn the training set into a numpy array for the classifier
-    npArrTrainData = np.array(training_data)
-    npArrTrainLabels = np.array(training_labels)
+    npArrTrainData = np.float32(training_data).reshape(-1, 68)
+    npArrTrainLabels = np.float32(training_labels)
 
-    print "type of npArrTrainData = {0}, type of npArrTrainData[0] = {1}, type of npArrTrainData[0][0] = {2}".format(
-        type(npArrTrainData), type(npArrTrainData[0]), type(npArrTrainData[0][0]))
+    print "type of npArrTrainData = {0}, type of npArrTrainData[0] = {1},\
+           type of npArrTrainData[0][0] = {2}".format(type(npArrTrainData),\
+           type(npArrTrainData[0]), type(npArrTrainData[0][0]))
 
     # Train opencv SVM here.
     print("training SVM linear %s" % i)

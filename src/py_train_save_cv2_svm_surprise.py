@@ -17,7 +17,7 @@ import random
 import math
 import numpy as np
 import dlib
-import itertools
+# import itertools
 # from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
@@ -48,14 +48,14 @@ def get_files(emotion):
 
 
 # Constant factor to convert radians to degrees.
-rad2degConvtFactor = 180 / math.pi
+rad2degCnvtFactor = 180 / math.pi
 
 
 def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
 
     # For all detected face instances individually
-    for faceCount, detectedFace in enumerate(detectedFaces):
+    for detectedFace in enumerate(detectedFaces):
 
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
@@ -73,11 +73,11 @@ def get_landmarks(claheImage):
         yCoordMean = np.mean(yCoordinatesList)
 
         '''
-	# Mani - removing point coordinates distances
-	# Get distance between each point and the central point in both axes
+	    # Mani - removing point coordinates distances
+	    # Get distance between each point and the central point in both axes
         xDistFromCentre = [(x - xCoordMean) for x in xCoordinatesList]
         yDistFromCentre = [(y - yCoordMean) for y in yCoordinatesList]
-	'''
+	    '''
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
@@ -85,12 +85,12 @@ def get_landmarks(claheImage):
             noseBridgeAngleOffset = 0
         else:
             # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
-                        #                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
+                        #                 (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
             radians1 = math.atan(
                 (yCoordinatesList[26] - yCoordinatesList[29]) /
                 (xCoordinatesList[26] - xCoordinatesList[29]))
-            # since degrees = radians * rad2degConvtFactor
-            noseBridgeAngleOffset = int(radians1 * rad2degConvtFactor)
+            # since degrees = radians * rad2degCnvtFactor
+            noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
 
         if noseBridgeAngleOffset < 0:
             noseBridgeAngleOffset += 90
@@ -100,10 +100,10 @@ def get_landmarks(claheImage):
         landmarkVectorList = []
 
         '''
-	# Mani - removing point coordinates distances
+	    # Mani - removing point coordinates distances
         for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,
 						xCoordinatesList, yCoordinatesList):
-	'''
+	    '''
         for xcoord, ycoord in zip(xCoordinatesList, yCoordinatesList):
 
             '''
@@ -117,8 +117,7 @@ def get_landmarks(claheImage):
 
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
             radians2 = math.atan((ycoord - yCoordMean) / (xcoord - xCoordMean))
-            pointAngle = (radians2 * rad2degConvtFactor) - \
-                noseBridgeAngleOffset
+            pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset                
             landmarkVectorList.append(float(pointDistance))
             landmarkVectorList.append(float(pointAngle))
 
@@ -171,16 +170,20 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-accur_lin = []
+# accur_lin = []
 for i in range(0, 1):
     # Make sets by random sampling 80/20%
     print("Making sets %s" % i)
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     # Turn the training set into a numpy array for the classifier
-    npArrTrainData = np.array(training_data, dtype=float32)
-    npArrTrainLabels = np.array(training_labels, dtype=int32)
-
+    npArrTrainData = np.float32(training_data).reshape(-1, 68)
+    npArrTrainLabels = np.float32(training_labels)
+    
+    print "type of npArrTrainData = {0}, type of npArrTrainData[0] = {1},\
+           type of npArrTrainData[0][0] = {2}".format(type(npArrTrainData),\
+           type(npArrTrainData[0]), type(npArrTrainData[0][0]))
+    
     # Train opencv SVM here.
     print("training SVM linear %s" % i)
     # clf.fit(npArrTrainData, training_labels)
@@ -196,7 +199,7 @@ for i in range(0, 1):
     '''
 
     # Store accuracy in a list
-    accur_lin.append(pred_lin)
+    # accur_lin.append(pred_lin)
 
 # Get mean accuracy of the i runs
-print("Mean value lin svm: %.3f" % np.mean(accur_lin))
+# print("Mean value lin svm: %.3f" % np.mean(accur_lin))
