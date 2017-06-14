@@ -17,7 +17,7 @@ import random
 import math
 import numpy as np
 import dlib
-import itertools
+# import itertools
 from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
@@ -32,7 +32,7 @@ emotions = ["happy", "surprise"]
 
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor("..\\shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("..\\input\\shape_predictor_68_face_landmarks.dat")
 
 # Set the classifier as a support vector machines with polynomial kernel
 clf = SVC(kernel='linear', probability=True, tol=1e-3)
@@ -58,7 +58,7 @@ def get_landmarks(image):
     detections = detector(image, 1)
 
     # For all detected face instances individually
-    for k, d in enumerate(detections):
+    for d in enumerate(detections):
         # Draw Facial Landmarks with the predictor class\
         shape = predictor(image, d)
         xlist = []
