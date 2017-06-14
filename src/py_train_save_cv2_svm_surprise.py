@@ -116,7 +116,12 @@ def get_landmarks(claheImage):
             xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
 
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
-            radians2 = math.atan((ycoord - yCoordMean) / (xcoord - xCoordMean))
+            
+            denom = xcoord - xCoordMean
+            if denom == 0:
+                radians2 = 90
+            else:
+                radians2 = math.atan((ycoord - yCoordMean) / denom)
             pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset                
             landmarkVectorList.append(float(pointDistance))
             landmarkVectorList.append(float(pointAngle))

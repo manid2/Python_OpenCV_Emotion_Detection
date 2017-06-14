@@ -103,7 +103,11 @@ def get_landmarks(image):
             meannp = np.asarray((ymean, xmean))
             coornp = np.asarray((z, w))
             dist = np.linalg.norm(coornp - meannp)
-            radians2 = math.atan((z - ymean) / (w - xmean))
+            denom = w - xmean
+            if denom == 0:
+                radians2 = 90
+            else:
+                radians2 = math.atan((z - ymean) / denom)
             anglerelative = radians2 * rad2deg_const_factor - anglenose
             landmarks_vectorised.append(dist)
             landmarks_vectorised.append(anglerelative)

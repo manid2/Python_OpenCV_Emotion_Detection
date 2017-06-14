@@ -119,10 +119,9 @@ def get_landmarks(claheImage):
 
             denom = xcoord - xCoordMean
             if denom == 0:
-                pass
+                radians2 = 90
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
-
             pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset                
             landmarkVectorList.append(pointDistance)
             landmarkVectorList.append(pointAngle)
