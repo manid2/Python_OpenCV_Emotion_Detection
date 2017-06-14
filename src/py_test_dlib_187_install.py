@@ -23,7 +23,7 @@ detector = dlib.get_frontal_face_detector()  # Face detector
 
 # Landmark identifier. Set the filename to whatever you named the
 # downloaded file
-predictor = dlib.shape_predictor("..\\shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("..\\input\\shape_predictor_68_face_landmarks.dat")
 
 while True:
     ret, frame = video_capture.read()
