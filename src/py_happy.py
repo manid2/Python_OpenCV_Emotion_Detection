@@ -116,16 +116,16 @@ def get_landmarks(claheImage):
 
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
             
-        # Prevent divide by zero error.
-        denom = (xcoord - xCoordMean)
-        if denom == 0:
-            radians2 = 90
-        else:
-            radians2 = math.atan((ycoord - yCoordMean) / denom)
+            # Prevent divide by zero error.
+            denom = (xcoord - xCoordMean)
+            if denom == 0:
+                radians2 = 90
+            else:
+                radians2 = math.atan((ycoord - yCoordMean) / denom)
 
-        pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
-        landmarkVectorList.append(pointDistance)
-        landmarkVectorList.append(pointAngle)
+            pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
+            landmarkVectorList.append(pointDistance)
+            landmarkVectorList.append(pointAngle)
 
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
@@ -187,13 +187,16 @@ for i in range(0, 1):
     npArrTrainData = np.float32(training_data)
     npArrTrainLabels = np.float32(training_labels)
 
-    print "npArrTrainData.shape() = {0}, npArrTrainLabels.shape() = {1}".format(npArrTrainData.shape, npArrTrainLabels.shape)
+    print "npArrTrainData.shape() = {0}.".format(npArrTrainData.shape)
+    print "npArrTrainLabels.shape() = {0}".format(npArrTrainLabels.shape)
 
     # Train opencv SVM here.
     print("training SVM linear %s" % i)
     # clf.fit(npArrTrainData, training_labels)
     svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)
     svm.save('..\\input\\cv2_svm_happy_facial_landmarks.dat')
+    
+    print("training SVM linear %s - completed. SVM model written to dat file." % i)
 
     '''
     # Use score() function to get accuracy

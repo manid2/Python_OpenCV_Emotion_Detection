@@ -1,0 +1,5 @@
+Making sets 0
+npArrTrainData.shape() = (316L, 136L).
+npArrTrainLabels.shape() = (316L,)
+training SVM linear 0
+training SVM linear 0 - completed. SVM model written to dat file.
