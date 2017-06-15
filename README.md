@@ -25,10 +25,10 @@ from this Python object of type tuple
 ```
 
 #### Solution:
-Yet to figure out.
+Don't remove faceCount from ```for faceCount, detectedFace in enumerate(detectedFaces):``` loop
 
 #### Current trainData representation
 ```
-npArrTrainData = np.float32(training_data).reshape(-1, 68)
-npArrTrainLabels = np.float32(training_labels)
+npArrTrainData[316L, 136L] => 316 images with 68 * 2 features i.e 68 mag and 68 ang per image.
+npArrTrainLabels[316L] => labels corresponding to the input images.
 ```

@@ -35,7 +35,7 @@ claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
-    "..\\shape_predictor_68_face_landmarks.dat")
+    "..\\input\\shape_predictor_68_face_landmarks.dat")
 
 
 # Define function to get file list, randomly shuffle it and split 80/20
@@ -115,17 +115,17 @@ def get_landmarks(claheImage):
             xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
 
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
-			
-	    # Prevent divide by zero error.
-	    denom = (xcoord - xCoordMean)
-	    if denom == 0:
-                radians2 = 90
-	    else:
-                radians2 = math.atan((ycoord - yCoordMean) / denom)
-				
-            pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
-            landmarkVectorList.append(pointDistance)
-            landmarkVectorList.append(pointAngle)
+            
+        # Prevent divide by zero error.
+        denom = (xcoord - xCoordMean)
+        if denom == 0:
+            radians2 = 90
+        else:
+            radians2 = math.atan((ycoord - yCoordMean) / denom)
+
+        pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
+        landmarkVectorList.append(pointDistance)
+        landmarkVectorList.append(pointAngle)
 
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
@@ -137,6 +137,7 @@ def make_sets():
     training_labels = []
     prediction_data = []
     prediction_labels = []
+    
     for emotion in emotionsList:
         training, prediction = get_files(emotion)
 
@@ -192,7 +193,7 @@ for i in range(0, 1):
     print("training SVM linear %s" % i)
     # clf.fit(npArrTrainData, training_labels)
     svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)
-    svm.save('cv2_svm_happy_facial_landmarks.dat')
+    svm.save('..\\input\\cv2_svm_happy_facial_landmarks.dat')
 
     '''
     # Use score() function to get accuracy
@@ -206,4 +207,4 @@ for i in range(0, 1):
     # accur_lin.append(pred_lin)
 
 # Get mean accuracy of the i runs
-print("Mean value lin svm: %.3f" % np.mean(accur_lin))
+# print("Mean value lin svm: %.3f" % np.mean(accur_lin))
