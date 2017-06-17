@@ -179,7 +179,7 @@ svm_params = dict(
 
 maxRuns = 10
 runCount = 0
-predictionAccuracy = []
+predictionAccuracyList = []
 for runCount in range(0, maxRuns):
 
     # Make sets by random sampling 80/20%
@@ -241,12 +241,13 @@ for runCount in range(0, maxRuns):
     print "\t-> type(mask[0]) = {}".format(type(mask[0]))
     print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
     
-    print "\nPrediction accuracy = %{0}.\n".format(correct*100.0/results.size)
+    pred_accur = correct * 100.0 / results.size
+    print "\nPrediction accuracy = %{0}.\n".format(pred_accur)
     print "---------------------------------------------------------------"
     
-    predictionAccuracy.append(correct)
+    predictionAccuracyList.append(pred_accur)
     
 # Get the mean accuracy of the i runs
-print "Mean value of predict accuracy in five runs: {0:.4f}".format(
-    sum(predictionAccuracy) / len(predictionAccuracy))
+print "Mean value of predict accuracy in {0} runs: {1:.4f}".format(
+    maxRuns, sum(predictionAccuracyList) / len(predictionAccuracyList))
 

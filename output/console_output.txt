@@ -67,7 +67,7 @@ Testing opencv SVM linear 1 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %100.0.
+Prediction accuracy = %97.4358974359.
 
 ---------------------------------------------------------------
 
@@ -103,7 +103,7 @@ Testing opencv SVM linear 2 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
@@ -139,7 +139,7 @@ Testing opencv SVM linear 3 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %98.7179487179.
+Prediction accuracy = %97.4358974359.
 
 ---------------------------------------------------------------
 
@@ -175,7 +175,7 @@ Testing opencv SVM linear 4 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %93.5897435897.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
@@ -211,7 +211,7 @@ Testing opencv SVM linear 5 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %98.7179487179.
+Prediction accuracy = %97.4358974359.
 
 ---------------------------------------------------------------
 
@@ -247,7 +247,7 @@ Testing opencv SVM linear 6 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %98.7179487179.
+Prediction accuracy = %97.4358974359.
 
 ---------------------------------------------------------------
 
@@ -283,7 +283,7 @@ Testing opencv SVM linear 7 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %96.1538461538.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
@@ -319,7 +319,7 @@ Testing opencv SVM linear 8 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %96.1538461538.
 
 ---------------------------------------------------------------
 
@@ -355,7 +355,7 @@ Testing opencv SVM linear 9 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %98.7179487179.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
-Mean value of predict accuracy in five runs: 76.0000
+Mean value of predict accuracy in 10 runs: 98.4615
