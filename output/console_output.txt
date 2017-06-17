@@ -7,6 +7,9 @@ npArrTrainLabels.shape = (316L,).
 Training opencv SVM linear 0 - Started.
 Training opencv SVM linear 0 - Completed.
 
+Saving opencv SVM model to file - Completed.
+
+
 #################### Testing opencv SVM ####################
 
 npArrTestData.shape = (78L, 136L).
@@ -19,16 +22,15 @@ Testing opencv SVM linear 0 - Completed.
 	-> npArrTestLabels.size = 78
 
 	-> type(results) = <type 'numpy.ndarray'>
-	-> type(results[0]) = <type 'numpy.ndarray'>
-	-> type(results[0][0]) = <type 'numpy.float32'>
-	-> results.size = 78, results.shape = (78L, 1L)
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 78, results.shape = (78L,)
 
 #################### Check Accuracy ########################
 
 	-> type(mask) = <type 'numpy.ndarray'>
-	-> type(mask[0][0]) = <type 'numpy.bool_'>
-	-> mask.size = 6084, mask.shape = (78L, 78L)
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %5700.0.
+Prediction accuracy = %97.4358974359.
 
-Mean value of predict accuracy in five runs: 4446.0000
+Mean value of predict accuracy in five runs: 76.0000

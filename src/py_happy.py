@@ -54,8 +54,8 @@ def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
 
     # For all detected face instances individually
-    for faceCount, detectedFace in enumerate(detectedFaces):
-
+    for faceCount, detectedFace in enumerate(detectedFaces): 
+        
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
 
@@ -177,8 +177,10 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
+maxRuns = 5
+runCount = 0
 predictionAccuracy = []
-for i in range(0, 1):
+for i in range(0, maxRuns):
 
     # Make sets by random sampling 80/20%
     print "Making sets {0}".format(i)
@@ -200,8 +202,8 @@ for i in range(0, 1):
     print "Training opencv SVM linear {0} - Completed.".format(i)
     
     # Save opencv SVM trained model.
-    # svm.save('cv2_svm_happy_facial_landmarks.dat')    
-    # print "Saving opencv SVM model to file - Completed."
+    svm.save("..\\input\\cv2_svm_happy.dat")
+    print "\nSaving opencv SVM model to file - Completed."
     
     #################### Testing opencv SVM ####################
     
@@ -215,7 +217,7 @@ for i in range(0, 1):
     print "npArrTestLabels.shape = {0}.".format(npArrTestLabels.shape)
     
     print "Testing opencv SVM linear {0} - Started.".format(i)
-    results = svm.predict_all(npArrTestData)
+    results = svm.predict_all(npArrTestData).reshape((-1,))
     print "Testing opencv SVM linear {0} - Completed.".format(i)
     
     print "\n\t-> type(npArrTestLabels) = {}".format(type(npArrTestLabels))
@@ -224,7 +226,7 @@ for i in range(0, 1):
     
     print "\n\t-> type(results) = {}".format(type(results))
     print "\t-> type(results[0]) = {}".format(type(results[0]))
-    print "\t-> type(results[0][0]) = {}".format(type(results[0][0]))
+    # print "\t-> type(results[0][0]) = {}".format(type(results[0][0]))
     print "\t-> results.size = {}, results.shape = {}".format(results.size, results.shape)
 
     #################### Check Accuracy ########################
@@ -235,7 +237,7 @@ for i in range(0, 1):
     correct = np.count_nonzero(mask)
     
     print "\t-> type(mask) = {}".format(type(mask))
-    print "\t-> type(mask[0][0]) = {}".format(type(mask[0][0]))
+    print "\t-> type(mask[0]) = {}".format(type(mask[0]))
     print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
     
     print "\nPrediction accuracy = %{0}.\n".format(correct*100.0/results.size)
