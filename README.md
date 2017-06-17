@@ -6,7 +6,7 @@ Developing using a set of tutorials from the following link:
 [Pual Van Gent](http://www.paulvangent.com/).
 
 ## TO DO
-Calculate the prediction accuracy, experiment with feature extraction and representation.
+Load and test the opencv SVM model from .dat file.
 
 #### Current trainData representation
 ```
@@ -15,6 +15,6 @@ npArrTrainLabels[316L, ] => labels corresponding to the input images.
 
 npArrTestData.shape[78L, 136L]
 npArrTestLabels.shape[78L, ] 
-
-svm.predict_all() => results.shape[78L, 1L]
 ```
+
+##### Mean value of prediction accuracy in 10 runs: 98.4615

@@ -1,0 +1,125 @@
+
+		<--- Making sets 0 --->
+
+#################### Loading opencv SVM ####################
+
+Loading opencv SVM model from file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (157L, 136L).
+npArrTestLabels.shape = (157L,).
+Testing opencv SVM linear 0 - Started.
+Testing opencv SVM linear 0 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 157
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 157, results.shape = (157L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 157, mask.shape = (157L,)
+
+Prediction accuracy = %100.0.
+
+---------------------------------------------------------------
+
+		<--- Making sets 1 --->
+
+#################### Loading opencv SVM ####################
+
+Loading opencv SVM model from file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (157L, 136L).
+npArrTestLabels.shape = (157L,).
+Testing opencv SVM linear 1 - Started.
+Testing opencv SVM linear 1 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 157
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 157, results.shape = (157L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 157, mask.shape = (157L,)
+
+Prediction accuracy = %100.0.
+
+---------------------------------------------------------------
+
+		<--- Making sets 2 --->
+
+#################### Loading opencv SVM ####################
+
+Loading opencv SVM model from file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (157L, 136L).
+npArrTestLabels.shape = (157L,).
+Testing opencv SVM linear 2 - Started.
+Testing opencv SVM linear 2 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 157
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 157, results.shape = (157L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 157, mask.shape = (157L,)
+
+Prediction accuracy = %100.0.
+
+---------------------------------------------------------------
+
+		<--- Making sets 3 --->
+
+#################### Loading opencv SVM ####################
+
+Loading opencv SVM model from file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (157L, 136L).
+npArrTestLabels.shape = (157L,).
+Testing opencv SVM linear 3 - Started.
+Testing opencv SVM linear 3 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 157
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 157, results.shape = (157L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 157, mask.shape = (157L,)
+
+Prediction accuracy = %100.0.
+
+---------------------------------------------------------------
+Mean value of predict accuracy in 4 runs: 100.0000
