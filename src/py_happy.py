@@ -53,7 +53,7 @@ rad2degCnvtFactor = 180 / math.pi
 def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
 
-    # For all detected face instances individually
+    # For all detected face instances extract the features
     for faceCount, detectedFace in enumerate(detectedFaces): 
         
         # Draw Facial Landmarks with the predictor class
@@ -177,13 +177,14 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-maxRuns = 5
+maxRuns = 10
 runCount = 0
 predictionAccuracy = []
-for i in range(0, maxRuns):
+for runCount in range(0, maxRuns):
 
     # Make sets by random sampling 80/20%
-    print "Making sets {0}".format(i)
+    # print "Making sets {0}".format(runCount)
+    print "\n\t\t--- Making sets {0} ---".format(runCount)
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
     #################### Training opencv SVM ####################
@@ -197,9 +198,9 @@ for i in range(0, maxRuns):
     print "npArrTrainData.shape = {0}.".format(npArrTrainData.shape)
     print "npArrTrainLabels.shape = {0}.".format(npArrTrainLabels.shape)
     
-    print "Training opencv SVM linear {0} - Started.".format(i)
+    print "Training opencv SVM linear {0} - Started.".format(runCount)
     svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)    
-    print "Training opencv SVM linear {0} - Completed.".format(i)
+    print "Training opencv SVM linear {0} - Completed.".format(runCount)
     
     # Save opencv SVM trained model.
     svm.save("..\\input\\cv2_svm_happy.dat")
@@ -216,9 +217,9 @@ for i in range(0, maxRuns):
     print "npArrTestData.shape = {0}.".format(npArrTestData.shape)
     print "npArrTestLabels.shape = {0}.".format(npArrTestLabels.shape)
     
-    print "Testing opencv SVM linear {0} - Started.".format(i)
+    print "Testing opencv SVM linear {0} - Started.".format(runCount)
     results = svm.predict_all(npArrTestData).reshape((-1,))
-    print "Testing opencv SVM linear {0} - Completed.".format(i)
+    print "Testing opencv SVM linear {0} - Completed.".format(runCount)
     
     print "\n\t-> type(npArrTestLabels) = {}".format(type(npArrTestLabels))
     print "\t-> type(npArrTestLabels[0]) = {}".format(type(npArrTestLabels[0]))
@@ -241,9 +242,11 @@ for i in range(0, maxRuns):
     print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
     
     print "\nPrediction accuracy = %{0}.\n".format(correct*100.0/results.size)
+    print "---------------------------------------------------------------"
     
     predictionAccuracy.append(correct)
     
 # Get the mean accuracy of the i runs
-print "Mean value of predict accuracy in five runs: {0:.4f}".format(np.mean(predictionAccuracy))
+print "Mean value of predict accuracy in five runs: {0:.4f}".format(
+    sum(predictionAccuracy) / len(predictionAccuracy))
 
