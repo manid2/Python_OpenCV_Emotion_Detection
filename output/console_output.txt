@@ -1,5 +1,34 @@
 Making sets 0
-npArrTrainData.shape() = (316L, 136L).
-npArrTrainLabels.shape() = (316L,)
-training SVM linear 0
-training SVM linear 0 - completed. SVM model written to dat file.
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (316L, 136L).
+npArrTrainLabels.shape = (316L,).
+Training opencv SVM linear 0 - Started.
+Training opencv SVM linear 0 - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (78L, 136L).
+npArrTestLabels.shape = (78L,).
+Testing opencv SVM linear 0 - Started.
+Testing opencv SVM linear 0 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 78
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.ndarray'>
+	-> type(results[0][0]) = <type 'numpy.float32'>
+	-> results.size = 78, results.shape = (78L, 1L)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0][0]) = <type 'numpy.bool_'>
+	-> mask.size = 6084, mask.shape = (78L, 78L)
+
+Prediction accuracy = %5700.0.
+
+Mean value of predict accuracy in five runs: 4446.0000

@@ -72,11 +72,11 @@ def get_landmarks(claheImage):
         yCoordMean = np.mean(yCoordinatesList)
 
         '''
-		# Mani - removing point coordinates distances
-		# Get distance between each point and the central point in both axes
+        # Mani - removing point coordinates distances
+        # Get distance between each point and the central point in both axes
         xDistFromCentre = [(x - xCoordMean) for x in xCoordinatesList]
         yDistFromCentre = [(y - yCoordMean) for y in yCoordinatesList]
-		'''
+        '''
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
@@ -99,10 +99,10 @@ def get_landmarks(claheImage):
         landmarkVectorList = []
 
         '''
-		# Mani - removing point coordinates distances
+        # Mani - removing point coordinates distances
         for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,
-						xCoordinatesList, yCoordinatesList):
-		'''
+                        xCoordinatesList, yCoordinatesList):
+        '''
         for xcoord, ycoord in zip(xCoordinatesList, yCoordinatesList):
 
             '''
@@ -122,7 +122,7 @@ def get_landmarks(claheImage):
                 radians2 = 90
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
-
+                
             pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
             landmarkVectorList.append(pointDistance)
             landmarkVectorList.append(pointAngle)
@@ -177,37 +177,71 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-# accur_lin = []
+predictionAccuracy = []
 for i in range(0, 1):
+
     # Make sets by random sampling 80/20%
-    print("Making sets %s" % i)
+    print "Making sets {0}".format(i)
     training_data, training_labels, prediction_data, prediction_labels = make_sets()
 
-    # Turn the training set into a numpy array for the classifier
+    #################### Training opencv SVM ####################
+    
+    print "\n#################### Training opencv SVM ####################\n"
+    
+    # Training data must be float32 matrix for the opencv svm.
     npArrTrainData = np.float32(training_data)
     npArrTrainLabels = np.float32(training_labels)
 
-    print "npArrTrainData.shape() = {0}.".format(npArrTrainData.shape)
-    print "npArrTrainLabels.shape() = {0}".format(npArrTrainLabels.shape)
-
-    # Train opencv SVM here.
-    print("training SVM linear %s" % i)
-    # clf.fit(npArrTrainData, training_labels)
-    svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)
-    svm.save('..\\input\\cv2_svm_happy_facial_landmarks.dat')
+    print "npArrTrainData.shape = {0}.".format(npArrTrainData.shape)
+    print "npArrTrainLabels.shape = {0}.".format(npArrTrainLabels.shape)
     
-    print("training SVM linear %s - completed. SVM model written to dat file." % i)
+    print "Training opencv SVM linear {0} - Started.".format(i)
+    svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)    
+    print "Training opencv SVM linear {0} - Completed.".format(i)
+    
+    # Save opencv SVM trained model.
+    # svm.save('cv2_svm_happy_facial_landmarks.dat')    
+    # print "Saving opencv SVM model to file - Completed."
+    
+    #################### Testing opencv SVM ####################
+    
+    print "\n#################### Testing opencv SVM ####################\n"
+    
+    # Testing data must be float32 matrix for the opencv svm.    
+    npArrTestData = np.float32(prediction_data)
+    npArrTestLabels = np.float32(prediction_labels)
+        
+    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)
+    print "npArrTestLabels.shape = {0}.".format(npArrTestLabels.shape)
+    
+    print "Testing opencv SVM linear {0} - Started.".format(i)
+    results = svm.predict_all(npArrTestData)
+    print "Testing opencv SVM linear {0} - Completed.".format(i)
+    
+    print "\n\t-> type(npArrTestLabels) = {}".format(type(npArrTestLabels))
+    print "\t-> type(npArrTestLabels[0]) = {}".format(type(npArrTestLabels[0]))
+    print "\t-> npArrTestLabels.size = {}".format(npArrTestLabels.size)
+    
+    print "\n\t-> type(results) = {}".format(type(results))
+    print "\t-> type(results[0]) = {}".format(type(results[0]))
+    print "\t-> type(results[0][0]) = {}".format(type(results[0][0]))
+    print "\t-> results.size = {}, results.shape = {}".format(results.size, results.shape)
 
-    '''
-    # Use score() function to get accuracy
-    print("getting accuracies %s" % i)
-    npar_pred = np.array(prediction_data)
-    pred_lin = clf.score(npar_pred, prediction_labels)
-    print "linear: ", pred_lin
-    '''
+    #################### Check Accuracy ########################
+    
+    print "\n#################### Check Accuracy ########################\n"
+    
+    mask = results == npArrTestLabels
+    correct = np.count_nonzero(mask)
+    
+    print "\t-> type(mask) = {}".format(type(mask))
+    print "\t-> type(mask[0][0]) = {}".format(type(mask[0][0]))
+    print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
+    
+    print "\nPrediction accuracy = %{0}.\n".format(correct*100.0/results.size)
+    
+    predictionAccuracy.append(correct)
+    
+# Get the mean accuracy of the i runs
+print "Mean value of predict accuracy in five runs: {0:.4f}".format(np.mean(predictionAccuracy))
 
-    # Store accuracy in a list
-    # accur_lin.append(pred_lin)
-
-# Get mean accuracy of the i runs
-# print("Mean value lin svm: %.3f" % np.mean(accur_lin))
