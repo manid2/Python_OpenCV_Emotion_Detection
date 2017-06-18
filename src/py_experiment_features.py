@@ -12,6 +12,7 @@ Mani experimenting with facial information extraction.
 
 import cv2
 import dlib
+import math
 import numpy as np
 import datetime as dt
 
@@ -26,6 +27,9 @@ detector = dlib.get_frontal_face_detector()  # Face detector
 # Landmark identifier. Set the filename to whatever you named the
 # downloaded file
 predictor = dlib.shape_predictor("..\\input\\shape_predictor_68_face_landmarks.dat")
+
+# Constant factor to convert radians to degrees.
+rad2degCnvtFactor = 180 / math.pi
 
 while True:
     ret, frame = video_capture.read()
@@ -50,7 +54,39 @@ while True:
         xCoordMean = np.mean(xCoordinatesList)
         yCoordMean = np.mean(yCoordinatesList)
         
-        for i in range(1, 68):  # There are 68 landmark points on each face
+        # If x-coordinates of the set are the same, the angle is 0,
+        # catch to prevent 'divide by 0' error in the function
+        if xCoordinatesList[27] == xCoordinatesList[30]:
+            noseBridgeAngleOffset = 0
+            # radians1 = 1.5708 # 90 deg = 1.5708 rads
+        else:           
+            radians1 = math.atan(
+                (yCoordinatesList[27] - yCoordinatesList[30]) /
+                (xCoordinatesList[27] - xCoordinatesList[30]))
+            # since degrees = radians * rad2degCnvtFactor
+            noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
+
+        if noseBridgeAngleOffset < 0:
+            noseBridgeAngleOffset += 90
+        else:
+            noseBridgeAngleOffset -= 90
+            
+        # For each 68 landmark points.
+        for i in range(1, 68):
+            
+            '''
+            cv2.arrowedLine(frame, (int(xCoordMean), int(yCoordMean)), 
+                            (xCoordinatesList[i], yCoordinatesList[i]),
+                            (0, 0, 255), thickness=1, line_type=4,
+                            shift=0, tipLength=0.05)
+            '''
+            '''
+            cv2.circle(frame, (xCoordinatesList[i], yCoordinatesList[i]),
+                       1, (0, 0, 255), thickness=2)
+            cv2.putText(frame, "{}".format(i), (xCoordinatesList[i], yCoordinatesList[i]),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 255, 0), thickness=1)
+            '''
+            '''
             # For each point, draw circle with thickness = 2 on the original frame
             if i == 27 or i == 30:
                 cv2.circle(frame, (xCoordinatesList[i], yCoordinatesList[i]),
@@ -61,12 +97,12 @@ while True:
                 # pass                
                 cv2.circle(frame, (xCoordinatesList[i], yCoordinatesList[i]),
                        1, (0, 0, 255), thickness=2)
-        
+            '''
         # For mean coordinates.
         cv2.circle(frame, (int(xCoordMean), int(yCoordMean)), 1, (255, 0, 0), thickness=2)
         cv2.putText(frame, "mean({}, {})".format(int(xCoordMean), int(yCoordMean)), 
                     (int(xCoordMean), int(yCoordMean)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 0, 0), thickness=1)                   
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 0, 0), thickness=1) 
 
     cv2.imshow("image", frame)  # Display the frame
     
