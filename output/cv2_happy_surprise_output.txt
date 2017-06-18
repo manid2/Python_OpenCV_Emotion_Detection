@@ -1,0 +1,181 @@
+
+		<--- Making sets 0 --->
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (382L, 136L).
+npArrTrainLabels.shape = (382L,).
+Training opencv SVM linear 0 - Started.
+Training opencv SVM linear 0 - Completed.
+
+Saving opencv SVM model to file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (94L, 136L).
+npArrTestLabels.shape = (94L,).
+Testing opencv SVM linear 0 - Started.
+Testing opencv SVM linear 0 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 94
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 94, results.shape = (94L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 94, mask.shape = (94L,)
+
+Prediction accuracy = %97.8723404255.
+
+---------------------------------------------------------------
+
+		<--- Making sets 1 --->
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (382L, 136L).
+npArrTrainLabels.shape = (382L,).
+Training opencv SVM linear 1 - Started.
+Training opencv SVM linear 1 - Completed.
+
+Saving opencv SVM model to file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (94L, 136L).
+npArrTestLabels.shape = (94L,).
+Testing opencv SVM linear 1 - Started.
+Testing opencv SVM linear 1 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 94
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 94, results.shape = (94L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 94, mask.shape = (94L,)
+
+Prediction accuracy = %85.1063829787.
+
+---------------------------------------------------------------
+
+		<--- Making sets 2 --->
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (382L, 136L).
+npArrTrainLabels.shape = (382L,).
+Training opencv SVM linear 2 - Started.
+Training opencv SVM linear 2 - Completed.
+
+Saving opencv SVM model to file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (94L, 136L).
+npArrTestLabels.shape = (94L,).
+Testing opencv SVM linear 2 - Started.
+Testing opencv SVM linear 2 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 94
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 94, results.shape = (94L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 94, mask.shape = (94L,)
+
+Prediction accuracy = %89.3617021277.
+
+---------------------------------------------------------------
+
+		<--- Making sets 3 --->
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (382L, 136L).
+npArrTrainLabels.shape = (382L,).
+Training opencv SVM linear 3 - Started.
+Training opencv SVM linear 3 - Completed.
+
+Saving opencv SVM model to file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (94L, 136L).
+npArrTestLabels.shape = (94L,).
+Testing opencv SVM linear 3 - Started.
+Testing opencv SVM linear 3 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 94
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 94, results.shape = (94L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 94, mask.shape = (94L,)
+
+Prediction accuracy = %95.7446808511.
+
+---------------------------------------------------------------
+
+		<--- Making sets 4 --->
+
+#################### Training opencv SVM ####################
+
+npArrTrainData.shape = (382L, 136L).
+npArrTrainLabels.shape = (382L,).
+Training opencv SVM linear 4 - Started.
+Training opencv SVM linear 4 - Completed.
+
+Saving opencv SVM model to file - Completed.
+
+#################### Testing opencv SVM ####################
+
+npArrTestData.shape = (94L, 136L).
+npArrTestLabels.shape = (94L,).
+Testing opencv SVM linear 4 - Started.
+Testing opencv SVM linear 4 - Completed.
+
+	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
+	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
+	-> npArrTestLabels.size = 94
+
+	-> type(results) = <type 'numpy.ndarray'>
+	-> type(results[0]) = <type 'numpy.float32'>
+	-> results.size = 94, results.shape = (94L,)
+
+#################### Check Accuracy ########################
+
+	-> type(mask) = <type 'numpy.ndarray'>
+	-> type(mask[0]) = <type 'numpy.bool_'>
+	-> mask.size = 94, mask.shape = (94L,)
+
+Prediction accuracy = %92.5531914894.
+
+---------------------------------------------------------------
+Mean value of predict accuracy in 5 runs: 92.1277

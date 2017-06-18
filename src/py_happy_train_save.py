@@ -27,7 +27,7 @@ __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 # "happy", "sadness", "surprise"]
 
 # Training happy against neutral.
-emotionsList = ["happy", "neutral"]
+emotionsList = ["happy", "surprise", "neutral"]
 
 claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
@@ -177,7 +177,7 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-maxRuns = 10
+maxRuns = 5
 runCount = 0
 predictionAccuracyList = [0] * maxRuns
 for runCount in range(0, maxRuns):
@@ -203,7 +203,7 @@ for runCount in range(0, maxRuns):
     print "Training opencv SVM linear {0} - Completed.".format(runCount)
     
     # Save opencv SVM trained model.
-    svm.save("..\\input\\cv2_svm_happy.dat")
+    svm.save("..\\input\\cv2_svm_happy_surprise.dat")
     print "\nSaving opencv SVM model to file - Completed."
     
     #################### Testing opencv SVM ####################

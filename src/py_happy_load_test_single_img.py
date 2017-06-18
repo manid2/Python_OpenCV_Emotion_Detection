@@ -21,7 +21,7 @@ __version__ = "2.0, 18/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # Training happy against neutral.
-emotionsList = ["happy", "neutral"]
+emotionsList = ["happy", "surprise", "neutral"]
 
 claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
@@ -152,7 +152,7 @@ for runCount in range(0, maxRuns):
     print "\n#################### Loading opencv SVM ####################\n"
     
     # Load opencv SVM trained model.
-    svm.load("..\\input\\cv2_svm_happy.dat")
+    svm.load("..\\input\\cv2_svm_happy_surprise.dat")
     print "Loading opencv SVM model from file - Completed."
     
     #################### Testing opencv SVM ####################
