@@ -6,7 +6,7 @@ Developing using a set of tutorials from the following link:
 [Pual Van Gent](http://www.paulvangent.com/).
 
 ## TO DO
-Load and test the opencv SVM model from .dat file.
+Test for noseBridgeAngleOffset is pending.
 
 #### Current trainData representation
 ```

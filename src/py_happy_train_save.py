@@ -80,14 +80,13 @@ def get_landmarks(claheImage):
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
-        if xCoordinatesList[26] == xCoordinatesList[29]:
+        if xCoordinatesList[27] == xCoordinatesList[30]:
             noseBridgeAngleOffset = 0
-        else:
-            # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
-                        #                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
+            # radians1 = 1.5708 # 90 deg = 1.5708 rads
+        else:           
             radians1 = math.atan(
-                (yCoordinatesList[26] - yCoordinatesList[29]) /
-                (xCoordinatesList[26] - xCoordinatesList[29]))
+                (yCoordinatesList[27] - yCoordinatesList[30]) /
+                (xCoordinatesList[27] - xCoordinatesList[30]))
             # since degrees = radians * rad2degCnvtFactor
             noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
 
