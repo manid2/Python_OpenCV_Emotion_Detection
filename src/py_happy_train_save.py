@@ -17,11 +17,9 @@ import random
 import math
 import numpy as np
 import dlib
-# import itertools
-# from sklearn.svm import SVC
 
 # Experimenting with the actual method used in the tutorial
-__version__ = "1.1, 01/06/2017"
+__version__ = "2.0, 18/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # Complete emotions lists:
@@ -47,8 +45,10 @@ def get_files(emotion):
     return training, prediction
 
 
+faceCount = 0
 # Constant factor to convert radians to degrees.
 rad2degCnvtFactor = 180 / math.pi
+
 
 def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
@@ -119,7 +119,7 @@ def get_landmarks(claheImage):
             # Prevent divide by zero error.
             denom = (xcoord - xCoordMean)
             if denom == 0:
-                radians2 = 90
+                radians2 = 1.5708 # 90 deg = 1.5708 rads
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
                 
@@ -177,7 +177,7 @@ svm_params = dict(
     C=2.67,
     gamma=5.383)
 
-maxRuns = 10
+maxRuns = 1
 runCount = 0
 predictionAccuracyList = []
 for runCount in range(0, maxRuns):
