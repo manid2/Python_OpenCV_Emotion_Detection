@@ -12,6 +12,7 @@ Mani experimenting with facial information extraction.
 
 import cv2
 import dlib
+import datetime as dt
 
 # No need to modify this one as it is a helper script.
 __version__ = "1.0, 17/05/2017"
@@ -36,13 +37,26 @@ while True:
     for k, d in enumerate(detections):  # For each detected face
         shape = predictor(clahe_image, d)  # Get coordinates
         for i in range(1, 68):  # There are 68 landmark points on each face
-            cv2.circle(frame, (shape.part(i).x, shape.part(i).y),
+            # For each point, draw circle with thickness = 2 on the original frame
+            if i == 27 or i == 30:
+                cv2.circle(frame, (shape.part(i).x, shape.part(i).y),
+                       1, (0, 255, 0), thickness=2)
+                cv2.putText(frame, "P{}".format(i), (shape.part(i).x, shape.part(i).y),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), thickness=1)      
+            else:
+                # pass                
+                cv2.circle(frame, (shape.part(i).x, shape.part(i).y),
                        1, (0, 0, 255), thickness=2)
-            # For each point, draw a red circle with thickness2 on the original
-            # frame
+                
 
     cv2.imshow("image", frame)  # Display the frame
-
-    if cv2.waitKey(1) & 0xFF == ord(
-            'q'):  # Exit program when the user presses 'q'
+    
+    # Save the frame when the user presses 's'
+    if cv2.waitKey(1) & 0xFF == ord('s'):
+        img_name = "..\\img_samples\\img_cap_{}.jpg".format(
+            dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+        cv2.imwrite(img_name, frame)
+    
+    # Exit program when the user presses 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
