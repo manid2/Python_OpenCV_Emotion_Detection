@@ -19,7 +19,7 @@ import numpy as np
 import dlib
 
 # Experimenting with the actual method used in the tutorial
-__version__ = "1.1, 01/06/2017"
+__version__ = "2.0, 18/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
 # Complete emotions lists:

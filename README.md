@@ -6,7 +6,8 @@ Developing using a set of tutorials from the following link:
 [Pual Van Gent](http://www.paulvangent.com/).
 
 ## TO DO
-Test for noseBridgeAngleOffset is pending.
+1. For real time faces i.e. random faces.
+2. Test for noseBridgeAngleOffset is pending.
 
 #### Current trainData representation
 ```
@@ -17,4 +18,4 @@ npArrTestData.shape[78L, 136L]
 npArrTestLabels.shape[78L, ] 
 ```
 
-##### Mean value of prediction accuracy in 10 runs: 98.4615
+##### Mean value of prediction accuracy in 10 runs: 99.3590 - after correcting for nosebridge points and radians2.

@@ -12,19 +12,13 @@ Mani experimenting with facial information extraction.
 """
 
 import cv2
-import glob
-import random
 import math
-import numpy as np
 import dlib
+import numpy as np
 
 # Experimenting with the actual method used in the tutorial
 __version__ = "2.0, 18/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
-
-# Complete emotions lists:
-# emotionsList = ["neutral", "anger", "contempt", "disgust", "fear",
-# "happy", "sadness", "surprise"]
 
 # Training happy against neutral.
 emotionsList = ["happy", "neutral"]
@@ -35,17 +29,6 @@ frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
     "..\\input\\shape_predictor_68_face_landmarks.dat")
 
-
-# Define function to get file list, randomly shuffle it and split 80/20
-def get_files(emotion):
-    files = glob.glob("..\\dataset\\%s\\*" % emotion)
-    random.shuffle(files)
-    training = files[:int(len(files) * 0.8)]  # get first 80% of file list
-    prediction = files[-int(len(files) * 0.2):]  # get last 20% of file list
-    return training, prediction
-
-
-# faceCount = 0
 # Constant factor to convert radians to degrees.
 rad2degCnvtFactor = 180 / math.pi
 
@@ -54,7 +37,6 @@ def get_landmarks(claheImage):
     detectedFaces = frontalFaceDetector(claheImage, 1)
 
     # For all detected face instances extract the features
-    # for faceCount, detectedFace in enumerate(detectedFaces):
     for detectedFace in detectedFaces:
         
         # Draw Facial Landmarks with the predictor class
@@ -131,124 +113,70 @@ def get_landmarks(claheImage):
         landmarkVectorList = "error"
     return landmarkVectorList
 
-
-def make_sets():
-    training_data = []
-    training_labels = []
-    prediction_data = []
-    prediction_labels = []
-    
-    for emotion in emotionsList:
-        training, prediction = get_files(emotion)
-
-        # Append data to training and prediction list, and generate labels 0-7
-        for item in training:
-            image = cv2.imread(item)  # read image
-            gray = cv2.cvtColor(
-                image, cv2.COLOR_BGR2GRAY)  # convert to grayscale
-            clahe_image = claheObject.apply(gray)
-            landmarkVectorList = get_landmarks(clahe_image)
-            if landmarkVectorList == "error":
-                pass
-            else:
-                # Append image array to training data list
-                training_data.append(landmarkVectorList)
-                training_labels.append(emotionsList.index(emotion))
-
-        for item in prediction:
-            image = cv2.imread(item)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            clahe_image = claheObject.apply(gray)
-            landmarkVectorList = get_landmarks(clahe_image)
-            if landmarkVectorList == "error":
-                pass
-            else:
-                prediction_data.append(landmarkVectorList)
-                prediction_labels.append(emotionsList.index(emotion))
-
-    return training_data, training_labels, prediction_data, prediction_labels
-
-
 # Set the classifier as a opencv svm with SVM_LINEAR kernel
 svm = cv2.SVM()
+'''
 svm_params = dict(
     kernel_type=cv2.SVM_LINEAR,
     svm_type=cv2.SVM_C_SVC,
     C=2.67,
     gamma=5.383)
+'''
 
 maxRuns = 10
 runCount = 0
 predictionAccuracyList = [0] * maxRuns
+
 for runCount in range(0, maxRuns):
 
-    # Make sets by random sampling 80/20%
-    # print "Making sets {0}".format(runCount)
-    print "\n\t\t<--- Making sets {0} --->".format(runCount)
-    training_data, training_labels, prediction_data, prediction_labels = make_sets()
+    # Get a sample for prediction
+    fileName = raw_input("Enter file name: ")
+    
+    if fileName == "quit" or fileName == "q":
+        print "Quitting the application!"
+        break
+    else:
+        print "File name is: {}".format(fileName)
+    
+    # Get landmark features from the image.
+    image = cv2.imread(fileName)
+    gray  = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    clahe_image = claheObject.apply(gray)
+    landmarkVectorList = get_landmarks(clahe_image)
+    if landmarkVectorList == "error":
+        print "Feature extraction returns error!"
+        continue # Go to the next run.
 
-    #################### Training opencv SVM ####################
+    #################### Loading opencv SVM ####################
     
-    print "\n#################### Training opencv SVM ####################\n"
+    print "\n#################### Loading opencv SVM ####################\n"
     
-    # Training data must be float32 matrix for the opencv svm.
-    npArrTrainData = np.float32(training_data)
-    npArrTrainLabels = np.float32(training_labels)
-
-    print "npArrTrainData.shape = {0}.".format(npArrTrainData.shape)
-    print "npArrTrainLabels.shape = {0}.".format(npArrTrainLabels.shape)
-    
-    print "Training opencv SVM linear {0} - Started.".format(runCount)
-    svm.train(npArrTrainData, npArrTrainLabels, params=svm_params)    
-    print "Training opencv SVM linear {0} - Completed.".format(runCount)
-    
-    # Save opencv SVM trained model.
-    svm.save("..\\input\\cv2_svm_happy.dat")
-    print "\nSaving opencv SVM model to file - Completed."
+    # Load opencv SVM trained model.
+    svm.load("..\\input\\cv2_svm_happy.dat")
+    print "Loading opencv SVM model from file - Completed."
     
     #################### Testing opencv SVM ####################
     
     print "\n#################### Testing opencv SVM ####################\n"
     
     # Testing data must be float32 matrix for the opencv svm.    
-    npArrTestData = np.float32(prediction_data)
-    npArrTestLabels = np.float32(prediction_labels)
+    npArrTestData = np.float32(landmarkVectorList)    
         
-    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)
-    print "npArrTestLabels.shape = {0}.".format(npArrTestLabels.shape)
+    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)    
     
     print "Testing opencv SVM linear {0} - Started.".format(runCount)
-    results = svm.predict_all(npArrTestData).reshape((-1,))
+    # results = svm.predict_all(npArrTestData).reshape((-1,))
+    result = svm.predict(npArrTestData)
     print "Testing opencv SVM linear {0} - Completed.".format(runCount)
     
-    print "\n\t-> type(npArrTestLabels) = {}".format(type(npArrTestLabels))
-    print "\t-> type(npArrTestLabels[0]) = {}".format(type(npArrTestLabels[0]))
-    print "\t-> npArrTestLabels.size = {}".format(npArrTestLabels.size)
-    
-    print "\n\t-> type(results) = {}".format(type(results))
-    print "\t-> type(results[0]) = {}".format(type(results[0]))
-    # print "\t-> type(results[0][0]) = {}".format(type(results[0][0]))
-    print "\t-> results.size = {}, results.shape = {}".format(results.size, results.shape)
-
-    #################### Check Accuracy ########################
-    
-    print "\n#################### Check Accuracy ########################\n"
-    
-    mask = results == npArrTestLabels
-    correct = np.count_nonzero(mask)
-    
-    print "\t-> type(mask) = {}".format(type(mask))
-    print "\t-> type(mask[0]) = {}".format(type(mask[0]))
-    print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
-    
-    pred_accur = correct * 100.0 / results.size
-    print "\nPrediction accuracy = %{0}.\n".format(pred_accur)
+    #################### Print result ####################
+    print "\n#################### Result ####################\n"
+    print "result: emotionsList[{0}] = {1}".format(result, emotionsList[int(result)])
+    predictionAccuracyList.append(result)
     print "---------------------------------------------------------------"
-    
-    predictionAccuracyList[runCount] = pred_accur
-    # predictionAccuracyList.append(pred_accur)
     
 # Get the mean accuracy of the i runs
 print "Mean value of predict accuracy in {0} runs: {1:.4f}".format(
-    maxRuns, sum(predictionAccuracyList) / len(predictionAccuracyList))
+    maxRuns, np.mean(predictionAccuracyList)) 
+# sum(predictionAccuracyList) / len(predictionAccuracyList)
 

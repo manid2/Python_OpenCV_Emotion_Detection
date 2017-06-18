@@ -1,5 +1,5 @@
 
-		--- Making sets 0 ---
+		<--- Making sets 0 --->
 
 #################### Training opencv SVM ####################
 
@@ -31,11 +31,11 @@ Testing opencv SVM linear 0 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %98.7179487179.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
-		--- Making sets 1 ---
+		<--- Making sets 1 --->
 
 #################### Training opencv SVM ####################
 
@@ -67,11 +67,11 @@ Testing opencv SVM linear 1 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %98.7179487179.
 
 ---------------------------------------------------------------
 
-		--- Making sets 2 ---
+		<--- Making sets 2 --->
 
 #################### Training opencv SVM ####################
 
@@ -107,7 +107,7 @@ Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
-		--- Making sets 3 ---
+		<--- Making sets 3 --->
 
 #################### Training opencv SVM ####################
 
@@ -139,11 +139,11 @@ Testing opencv SVM linear 3 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
-		--- Making sets 4 ---
+		<--- Making sets 4 --->
 
 #################### Training opencv SVM ####################
 
@@ -179,7 +179,7 @@ Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
-		--- Making sets 5 ---
+		<--- Making sets 5 --->
 
 #################### Training opencv SVM ####################
 
@@ -211,11 +211,11 @@ Testing opencv SVM linear 5 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %98.7179487179.
 
 ---------------------------------------------------------------
 
-		--- Making sets 6 ---
+		<--- Making sets 6 --->
 
 #################### Training opencv SVM ####################
 
@@ -247,11 +247,11 @@ Testing opencv SVM linear 6 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %97.4358974359.
+Prediction accuracy = %98.7179487179.
 
 ---------------------------------------------------------------
 
-		--- Making sets 7 ---
+		<--- Making sets 7 --->
 
 #################### Training opencv SVM ####################
 
@@ -287,7 +287,7 @@ Prediction accuracy = %100.0.
 
 ---------------------------------------------------------------
 
-		--- Making sets 8 ---
+		<--- Making sets 8 --->
 
 #################### Training opencv SVM ####################
 
@@ -319,11 +319,11 @@ Testing opencv SVM linear 8 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %96.1538461538.
+Prediction accuracy = %98.7179487179.
 
 ---------------------------------------------------------------
 
-		--- Making sets 9 ---
+		<--- Making sets 9 --->
 
 #################### Training opencv SVM ####################
 
@@ -355,7 +355,7 @@ Testing opencv SVM linear 9 - Completed.
 	-> type(mask[0]) = <type 'numpy.bool_'>
 	-> mask.size = 78, mask.shape = (78L,)
 
-Prediction accuracy = %100.0.
+Prediction accuracy = %98.7179487179.
 
 ---------------------------------------------------------------
-Mean value of predict accuracy in 10 runs: 98.4615
+Mean value of predict accuracy in 10 runs: 99.3590
