@@ -12,38 +12,23 @@ Mani experimenting with facial information extraction.
 """
 
 import cv2
-import glob
-import random
 import math
-import numpy as np
 import dlib
+import numpy as np
+import datetime as dt
 
 # Experimenting with the actual method used in the tutorial
 __version__ = "2.0, 18/06/2017"
 __author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
 
-# Complete emotions lists:
-# emotionsList = ["neutral", "anger", "contempt", "disgust", "fear",
-# "happy", "sadness", "surprise"]
-
 # Training happy against neutral.
-emotionsList = ["happy", "neutral"]
+emotionsList = ["happy", "surprise", "neutral"]
 
 claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
     "..\\input\\shape_predictor_68_face_landmarks.dat")
-
-
-# Define function to get file list, randomly shuffle it and split 80/20
-def get_files(emotion):
-    files = glob.glob("..\\dataset\\%s\\*" % emotion)
-    random.shuffle(files)
-    prediction = files[:int(len(files) * 0.4)]  # get first 40% of file list
-    # training = files[-int(len(files) * 0.6):]  # get last 60% of file list
-    return prediction
-
 
 # Constant factor to convert radians to degrees.
 rad2degCnvtFactor = 180 / math.pi
@@ -54,6 +39,8 @@ def get_landmarks(claheImage):
 
     # For all detected face instances extract the features
     for detectedFace in detectedFaces:
+        
+        # print "\nface found!\n"
         
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
@@ -79,14 +66,13 @@ def get_landmarks(claheImage):
 
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
-        if xCoordinatesList[26] == xCoordinatesList[29]:
+        if xCoordinatesList[27] == xCoordinatesList[30]:
             noseBridgeAngleOffset = 0
-        else:
-            # noseBridgeAngleOffset = int(math.atan((yCoordinatesList[26]-yCoordinatesList[29])/
-                        #                (xCoordinatesList[26]-xCoordinatesList[29]))*180/math.pi)
+            # radians1 = 1.5708 # 90 deg = 1.5708 rads
+        else:           
             radians1 = math.atan(
-                (yCoordinatesList[26] - yCoordinatesList[29]) /
-                (xCoordinatesList[26] - xCoordinatesList[29]))
+                (yCoordinatesList[27] - yCoordinatesList[30]) /
+                (xCoordinatesList[27] - xCoordinatesList[30]))
             # since degrees = radians * rad2degCnvtFactor
             noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
 
@@ -118,7 +104,7 @@ def get_landmarks(claheImage):
             # Prevent divide by zero error.
             denom = (xcoord - xCoordMean)
             if denom == 0:
-                radians2 = 90
+                radians2 = 1.5708 # 90 deg = 1.5708 rads
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
                 
@@ -130,28 +116,6 @@ def get_landmarks(claheImage):
         landmarkVectorList = "error"
     return landmarkVectorList
 
-
-def make_sets():    
-    prediction_data = []
-    prediction_labels = []
-    
-    for emotion in emotionsList:
-        prediction = get_files(emotion)
-        
-        for item in prediction:
-            image = cv2.imread(item)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            clahe_image = claheObject.apply(gray)
-            landmarkVectorList = get_landmarks(clahe_image)
-            if landmarkVectorList == "error":
-                pass
-            else:
-                prediction_data.append(landmarkVectorList)
-                prediction_labels.append(emotionsList.index(emotion))
-
-    return prediction_data, prediction_labels
-
-
 # Set the classifier as a opencv svm with SVM_LINEAR kernel
 svm = cv2.SVM()
 '''
@@ -162,66 +126,52 @@ svm_params = dict(
     gamma=5.383)
 '''
 
-maxRuns = 4
-runCount = 0
-predictionAccuracyList = []
-
-for runCount in range(0, maxRuns):
-
-    # Get a set of samples for prediction
-    print "\n\t\t<--- Making sets {0} --->".format(runCount)
-    prediction_data, prediction_labels = make_sets()
-
-    #################### Loading opencv SVM ####################
+#################### Loading opencv SVM ####################
     
-    print "\n#################### Loading opencv SVM ####################\n"
+print "\n#################### Loading opencv SVM ####################\n"
+
+# Load opencv SVM trained model.
+svm.load("..\\input\\cv2_svm_happy_surprise.dat")
+print "Loading opencv SVM model from file - Completed."
+
+#################### Start Webcam ####################
+
+video_capture = cv2.VideoCapture(0)  # Webcam object
+
+print "\n#################### Starting Webcam ####################\n"
+
+while True:
+    ret, frame = video_capture.read()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    clahe_image = claheObject.apply(gray)
+    landmarkVectorList = get_landmarks(clahe_image)
     
-    # Load opencv SVM trained model.
-    svm.load("..\\input\\cv2_svm_happy.dat")
-    print "Loading opencv SVM model from file - Completed."
+    if landmarkVectorList == "error":
+        print "Feature extraction returns error!"
+        break
     
     #################### Testing opencv SVM ####################
     
-    print "\n#################### Testing opencv SVM ####################\n"
+    # print "\n#################### Testing opencv SVM ####################\n"
     
     # Testing data must be float32 matrix for the opencv svm.    
-    npArrTestData = np.float32(prediction_data)
-    npArrTestLabels = np.float32(prediction_labels)
-        
-    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)
-    print "npArrTestLabels.shape = {0}.".format(npArrTestLabels.shape)
+    npArrTestData = np.float32(landmarkVectorList)    
     
-    print "Testing opencv SVM linear {0} - Started.".format(runCount)
-    results = svm.predict_all(npArrTestData).reshape((-1,))
-    print "Testing opencv SVM linear {0} - Completed.".format(runCount)
+    result = svm.predict(npArrTestData)
     
-    print "\n\t-> type(npArrTestLabels) = {}".format(type(npArrTestLabels))
-    print "\t-> type(npArrTestLabels[0]) = {}".format(type(npArrTestLabels[0]))
-    print "\t-> npArrTestLabels.size = {}".format(npArrTestLabels.size)
+    #################### Print result ####################
+    cv2.putText(frame, "You are {}.".format(emotionsList[int(result)]), (10, 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), thickness=1) 
     
-    print "\n\t-> type(results) = {}".format(type(results))
-    print "\t-> type(results[0]) = {}".format(type(results[0]))    
-    print "\t-> results.size = {}, results.shape = {}".format(results.size, results.shape)
+    cv2.imshow("image", frame)  # Display the frame
     
-    #################### Check Accuracy ########################
+    # Save the frame when the user presses 's'
+    if cv2.waitKey(1) & 0xFF == ord('s'):
+        img_name = "..\\img_samples\\img_cap_{}.jpg".format(
+            dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+        cv2.imwrite(img_name, frame)
     
-    print "\n#################### Check Accuracy ########################\n"
-    
-    mask = results == npArrTestLabels
-    correct = np.count_nonzero(mask)
-    
-    print "\t-> type(mask) = {}".format(type(mask))
-    print "\t-> type(mask[0]) = {}".format(type(mask[0]))
-    print "\t-> mask.size = {}, mask.shape = {}".format(mask.size, mask.shape)
-    
-    pred_accur = correct * 100.0 / results.size
-    print "\nPrediction accuracy = %{0}.\n".format(pred_accur)
-    print "---------------------------------------------------------------"
-    
-    predictionAccuracyList.append(pred_accur)
-    
-# Get the mean accuracy of the i runs
-print "Mean value of predict accuracy in {0} runs: {1:.4f}".format(
-    maxRuns, np.mean(predictionAccuracyList)) 
-# sum(predictionAccuracyList) / len(predictionAccuracyList)
+    # Exit program when the user presses 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
