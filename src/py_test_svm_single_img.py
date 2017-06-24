@@ -1,15 +1,58 @@
 """
-Mani experimenting with facial information extraction.
+@introduction:
+------------------------------------------------------------------------------
+    Introduction
+    ============
 
-@purpose:      To extract all possible information from an image
-               and present it in json or xml format for further processing.
-@applications: 1. Enhancing the multiple object detection in Computer Vision field.
-               2. Capturing a moment in the time based on the extracted information
-                  and applying auto filters to enhace the image.
-@based on: <a href="http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/">
-              Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV
-           </a>
+    This module is used to load and test the OpenCV SVM model.
+
+    SVM is short for Support Vector Machine, a Machine Learning algorithm
+    used to classify data but can also be used for regression. I am using it
+    to classify the different states [classes in ML terms] of human face.
+
+    Facial landmarks are extracted using dlib's shape predictor with a
+    pre-trained shape predictor model. These landmarks are further processed
+    as mentioned in the tutorial from Paul Van Gent and fed to the svm.train
+    method.
+
+    I have modified the code used in the tutorial and experimented with
+    simpler and easy to read code. For further description please follow the
+    tutorial by Paul mentioned in the link in README.md of this repo.
+------------------------------------------------------------------------------
+
+@usage:
+------------------------------------------------------------------------------
+    Usage
+    =====
+
+    Run the module as a command line option for python interpreter.
+    -> python py_test_svm_single_img.py
+------------------------------------------------------------------------------
+
+@purpose:
+------------------------------------------------------------------------------
+    To understand the data, feature generation and representation, SVM model
+    training and SVM prediction.
+------------------------------------------------------------------------------
+
+@based_on:
+------------------------------------------------------------------------------
+    <a href="http://www.paulvangent.com/">
+       Emotion Recognition using Facial Landmarks, Python, DLib and OpenCV
+    </a>
+------------------------------------------------------------------------------
+
+@applications:
+------------------------------------------------------------------------------
+    1. Image information extraction.
+    2. Understanding the machine learning aspects.
+    3. Data extraction and representation.
+------------------------------------------------------------------------------
 """
+
+# ---------------------------------------------------------------------------
+# Imports
+# ---------------------------------------------------------------------------
 
 import cv2
 import math
@@ -38,7 +81,7 @@ def get_landmarks(claheImage):
 
     # For all detected face instances extract the features
     for detectedFace in detectedFaces:
-        
+
         # Draw Facial Landmarks with the predictor class
         facialShape = facialShapePredictor(claheImage, detectedFace)
 
@@ -66,7 +109,7 @@ def get_landmarks(claheImage):
         if xCoordinatesList[27] == xCoordinatesList[30]:
             noseBridgeAngleOffset = 0
             # radians1 = 1.5708 # 90 deg = 1.5708 rads
-        else:           
+        else:
             radians1 = math.atan(
                 (yCoordinatesList[27] - yCoordinatesList[30]) /
                 (xCoordinatesList[27] - xCoordinatesList[30]))
@@ -97,14 +140,14 @@ def get_landmarks(claheImage):
             xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
 
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
-            
+
             # Prevent divide by zero error.
             denom = (xcoord - xCoordMean)
             if denom == 0:
-                radians2 = 1.5708 # 90 deg = 1.5708 rads
+                radians2 = 1.5708  # 90 deg = 1.5708 rads
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
-                
+
             pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
             landmarkVectorList.append(pointDistance)
             landmarkVectorList.append(pointAngle)
@@ -112,6 +155,7 @@ def get_landmarks(claheImage):
     if len(detectedFaces) < 1:
         landmarkVectorList = "error"
     return landmarkVectorList
+
 
 # Set the classifier as a opencv svm with SVM_LINEAR kernel
 svm = cv2.SVM()
@@ -128,55 +172,41 @@ runCount = 0
 predictionAccuracyList = [0] * maxRuns
 
 for runCount in range(0, maxRuns):
-
     # Get a sample for prediction
     fileName = raw_input("Enter file name: ")
-    
     if fileName == "quit" or fileName == "q":
         print "Quitting the application!"
         break
     else:
         print "File name is: {}".format(fileName)
-    
     # Get landmark features from the image.
     image = cv2.imread(fileName)
-    gray  = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     clahe_image = claheObject.apply(gray)
     landmarkVectorList = get_landmarks(clahe_image)
     if landmarkVectorList == "error":
         print "Feature extraction returns error!"
-        continue # Go to the next run.
+        continue  # Go to the next run.
 
-    #################### Loading opencv SVM ####################
-    
     print "\n#################### Loading opencv SVM ####################\n"
-    
     # Load opencv SVM trained model.
     svm.load("..\\input\\cv2_svm_happy_surprise.dat")
     print "Loading opencv SVM model from file - Completed."
-    
-    #################### Testing opencv SVM ####################
-    
     print "\n#################### Testing opencv SVM ####################\n"
-    
-    # Testing data must be float32 matrix for the opencv svm.    
-    npArrTestData = np.float32(landmarkVectorList)    
-        
-    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)    
-    
+    # Testing data must be float32 matrix for the opencv svm.
+    npArrTestData = np.float32(landmarkVectorList)
+    print "npArrTestData.shape = {0}.".format(npArrTestData.shape)
     print "Testing opencv SVM linear {0} - Started.".format(runCount)
     # results = svm.predict_all(npArrTestData).reshape((-1,))
     result = svm.predict(npArrTestData)
     print "Testing opencv SVM linear {0} - Completed.".format(runCount)
-    
-    #################### Print result ####################
     print "\n#################### Result ####################\n"
-    print "result: emotionsList[{0}] = {1}".format(result, emotionsList[int(result)])
+    print "result: emotionsList[{0}] = {1}".format(result,
+                                                   emotionsList[int(result)])
     predictionAccuracyList.append(result)
     print "---------------------------------------------------------------"
-    
+
 # Get the mean accuracy of the i runs
 print "Mean value of predict accuracy in {0} runs: {1:.4f}".format(
-    maxRuns, np.mean(predictionAccuracyList)) 
+    maxRuns, np.mean(predictionAccuracyList))
 # sum(predictionAccuracyList) / len(predictionAccuracyList)
-

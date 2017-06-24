@@ -234,8 +234,8 @@ def main():
         print "Training opencv SVM linear {0} - Completed.".format(runCount)
 
         # Save opencv SVM trained model.
-        svm.save("..{0}input{1}cv2_svm_happy_surprise.dat".format(dirsep,
-                                                                  dirsep))
+        svm.save("..{0}input{1}cv2_svm_6_states.yml".format(dirsep,
+                                                            dirsep))
         print "\nSaving opencv SVM model to file - Completed."
 
         # ------------------- Testing opencv SVM --------------------------

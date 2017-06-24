@@ -1,14 +1,7 @@
 """
 Mani experimenting with facial information extraction.
 
-@purpose:      To extract all possible information from an image
-               and present it in json or xml format for further processing.
-@applications: 1. Enhancing the multiple object detection in Computer Vision field.
-               2. Capturing a moment in the time based on the extracted information
-                  and applying auto filters to enhace the image.
-@Based on: <a href="http://www.paulvangent.com/2016/04/01/emotion-recognition-with-python-opencv-and-a-face-dataset/">
-              Emotion Recognition With Python, OpenCV and a Face Dataset
-           </a>
+This modules is used sort the CK+ dataset.
 """
 
 import glob
@@ -37,11 +30,11 @@ for x in participants:
     for sessions in glob.glob("%s\\*" % x):
         for files in glob.glob("%s\\*" % sessions):
             current_session = files[20:-30]
-            file = open(files, 'r')
+            file1 = open(files, 'r')
 
             # Emotions are encoded as a float, readline as float,
             # then convert to integer.
-            emotion = int(float(file.readline()))
+            emotion = int(float(file1.readline()))
 
             # get path for last image in sequence, which contains the emotion
             sourcefile_emotion = glob.glob(

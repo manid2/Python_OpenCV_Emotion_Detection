@@ -1,14 +1,7 @@
 """
 Mani experimenting with facial information extraction.
 
-@purpose:      To extract all possible information from an image
-               and present it in json or xml format for further processing.
-@applications: 1. Enhancing the multiple object detection in Computer Vision field.
-               2. Capturing a moment in the time based on the extracted information
-                  and applying auto filters to enhace the image.
-@Based on: <a href="http://www.paulvangent.com/2016/04/01/emotion-recognition-with-python-opencv-and-a-face-dataset/">
-              Emotion Recognition With Python, OpenCV and a Face Dataset
-           </a>
+This module is used for extracting faces from the dataset.
 """
 
 import cv2
@@ -71,11 +64,7 @@ def detect_faces(emotion):
             facefeatures = ""
 
         # Cut and save face
-        for (
-            x,
-            y,
-            w,
-                h) in facefeatures:  # get coordinates and size of rectangle containing face
+        for (x, y, w, h) in facefeatures:  # Face coordinates.
             print "face found in file: %s" % f
             gray = gray[y:y + h, x:x + w]  # Cut the frame to size
 
@@ -90,4 +79,4 @@ def detect_faces(emotion):
 
 
 for emotion in emotions:
-    detect_faces(emotion)  # Call functiona
+    detect_faces(emotion)  # Call function
