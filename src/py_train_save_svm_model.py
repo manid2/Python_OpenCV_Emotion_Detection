@@ -79,25 +79,18 @@ dirsep             = os.sep  # directory path separator
 curdir             = os.curdir  # Relative current directory i.e. '.'
 cwdpath            = os.getcwd()  # current working directory full path name
 
-RAD2DEG_CVT_FACTOR = 180 / math.pi  # Constant to convert radians to degrees.
-emotionsList       = ["anger", "contempt",  # Human facial expression states.
+emotionsList       = ["anger", "contempt",
                       "happy", "neutral",
-                      "sadness", "surprise"
-                      ''' 
-                      -> Yet to add `pout`,
-                      `disgust` and `fear` are excluded
-                      ''']
+                      "sadness", "surprise"]  # Human facial expression states
 
-''' --> For future experiments.
-Training for happy, surprise, neutral.
-emotionsList = ["happy", "surprise", "neutral"]
-'''
+''' -> Yet to add `pout`, `disgust` and `fear` are excluded '''
 
 frontalFaceDetector  = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
     "..{0}input{1}shape_predictor_68_face_landmarks.dat".format(
         dirsep, dirsep))
 
+RAD2DEG_CVT_FACTOR = 180 / math.pi  # Constant to convert radians to degrees.
 # ---------------------------------------------------------------------------
 # Functions
 # ---------------------------------------------------------------------------
@@ -115,11 +108,13 @@ def get_files(emotion):
        training, prediction : list of str => list of the file names
                               i.e. images for the emotion.
     """
+    print "\n get_files({0}) - Enter".format(emotion)
     files = glob.glob("..{0}dataset{1}{2}{3}*".format(dirsep, dirsep,
                                                       emotion, dirsep))
     random.shuffle(files)
     training = files[:int(len(files) * 0.8)]  # get first 80% of file list
     prediction = files[-int(len(files) * 0.2):]  # get last 20% of file list
+    print "\n get_files({0}) - Exit".format(emotion)
     return training, prediction
 
 
@@ -173,6 +168,7 @@ def get_landmarks(claheImage):
 
 
 def make_sets():
+    print "\n make_sets() - Enter"
     training_data     = []
     training_labels   = []
     prediction_data   = []
@@ -202,6 +198,7 @@ def make_sets():
                 prediction_data.append(landmarkVectorList)
                 prediction_labels.append(emotionsList.index(emotion))
 
+    print "\n make_sets() - Exit"
     return training_data, training_labels, prediction_data, prediction_labels
 
 
@@ -209,6 +206,7 @@ def main():
     """
     Main function - start of the program.
     """
+    print "\n main() - Enter"
     svm = cv2.SVM()
     svm_params = dict(kernel_type=cv2.SVM_LINEAR,
                       svm_type=cv2.SVM_C_SVC,
@@ -257,7 +255,7 @@ def main():
         print "\t-> type(results[0]) = {}".format(type(results[0]))
         print "\t-> results.size = {}, results.shape = {}".format(
                                                 results.size, results.shape)
-        # ################### Check Accuracy ########################
+        # ------------------- Check Accuracy ---------------------------------
         print "\n################## Check Accuracy #######################\n"
         mask = results == npArrTestLabels
         correct = np.count_nonzero(mask)
@@ -267,12 +265,13 @@ def main():
                                                             mask.shape)
         pred_accur = correct * 100.0 / results.size
         print "\nPrediction accuracy = %{0}.\n".format(pred_accur)
-        print "---------------------------------------------------------------"
+        print "--------------------------------------------------------------"
         predictionAccuracyList[runCount] = pred_accur
         # predictionAccuracyList.append(pred_accur)
     # Get the mean accuracy of the i runs
     print "Mean value of predict accuracy in {0} runs: {1:.4f}".format(
         maxRuns, sum(predictionAccuracyList) / len(predictionAccuracyList))
+    print "\n main() - Exit"
 
 
 if __name__ == '__main__':

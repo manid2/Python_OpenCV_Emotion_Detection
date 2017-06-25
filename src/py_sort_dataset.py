@@ -1,7 +1,7 @@
 """
 Mani experimenting with facial information extraction.
 
-This modules is used sort the CK+ dataset.
+This module is used to sort the CK+ dataset.
 """
 
 import glob

@@ -1,7 +1,7 @@
 """
 Mani experimenting with facial information extraction.
 
-This module is used to test dlib installation.
+This module is used to test dlib installation and facial landmarks detection.
 """
 
 import cv2

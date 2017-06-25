@@ -54,26 +54,44 @@
 # Imports
 # ---------------------------------------------------------------------------
 
+import os
 import cv2
 import math
 import dlib
 import numpy as np
 
-# Experimenting with the actual method used in the tutorial
-__version__ = "2.0, 18/06/2017"
-__author__ = "Mani Kumar D A - 2017, Paul van Gent - 2016"
+# ---------------------------------------------------------------------------
+# Module info
+# ---------------------------------------------------------------------------
 
-# Training happy against neutral.
-emotionsList = ["happy", "surprise", "neutral"]
+__author__    = "Mani Kumar D A - 2017, Paul van Gent - 2016"
+__version__   = "2.1, 24/06/2017"
+__license__   = "GNU GPL v3"
+__copyright__ = "Mani Kumar D A"
 
-claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+# ---------------------------------------------------------------------------
+# Module constants
+# ---------------------------------------------------------------------------
 
-frontalFaceDetector = dlib.get_frontal_face_detector()
+dirsep             = os.sep  # directory path separator
+curdir             = os.curdir  # Relative current directory i.e. '.'
+cwdpath            = os.getcwd()  # current working directory full path name
+
+RAD2DEG_CVT_FACTOR = 180 / math.pi  # Constant to convert radians to degrees.
+emotionsList       = ["anger", "contempt",
+                      "happy", "neutral",
+                      "sadness", "surprise"]  # Human facial expression states
+
+''' -> Yet to add `pout`, `disgust` and `fear` are excluded '''
+
+frontalFaceDetector  = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
-    "..\\input\\shape_predictor_68_face_landmarks.dat")
+    "..{0}input{1}shape_predictor_68_face_landmarks.dat".format(
+        dirsep, dirsep))
 
-# Constant factor to convert radians to degrees.
-rad2degCnvtFactor = 180 / math.pi
+# ---------------------------------------------------------------------------
+# Functions
+# ---------------------------------------------------------------------------
 
 
 def get_landmarks(claheImage):
@@ -113,8 +131,8 @@ def get_landmarks(claheImage):
             radians1 = math.atan(
                 (yCoordinatesList[27] - yCoordinatesList[30]) /
                 (xCoordinatesList[27] - xCoordinatesList[30]))
-            # since degrees = radians * rad2degCnvtFactor
-            noseBridgeAngleOffset = int(radians1 * rad2degCnvtFactor)
+            # since degrees = radians * RAD2DEG_CVT_FACTOR
+            noseBridgeAngleOffset = int(radians1 * RAD2DEG_CVT_FACTOR)
 
         if noseBridgeAngleOffset < 0:
             noseBridgeAngleOffset += 90
@@ -148,7 +166,7 @@ def get_landmarks(claheImage):
             else:
                 radians2 = math.atan((ycoord - yCoordMean) / denom)
 
-            pointAngle = (radians2 * rad2degCnvtFactor) - noseBridgeAngleOffset
+            pointAngle = (radians2 * RAD2DEG_CVT_FACTOR) - noseBridgeAngleOffset
             landmarkVectorList.append(pointDistance)
             landmarkVectorList.append(pointAngle)
 
@@ -158,18 +176,11 @@ def get_landmarks(claheImage):
 
 
 # Set the classifier as a opencv svm with SVM_LINEAR kernel
-svm = cv2.SVM()
-'''
-svm_params = dict(
-    kernel_type=cv2.SVM_LINEAR,
-    svm_type=cv2.SVM_C_SVC,
-    C=2.67,
-    gamma=5.383)
-'''
-
 maxRuns = 10
 runCount = 0
+svm = cv2.SVM()
 predictionAccuracyList = [0] * maxRuns
+claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 for runCount in range(0, maxRuns):
     # Get a sample for prediction
@@ -190,7 +201,8 @@ for runCount in range(0, maxRuns):
 
     print "\n#################### Loading opencv SVM ####################\n"
     # Load opencv SVM trained model.
-    svm.load("..\\input\\cv2_svm_happy_surprise.dat")
+    svm.load("..{0}input{1}cv2_svm_happy_surprise.dat".format(dirsep,
+                                                              dirsep))
     print "Loading opencv SVM model from file - Completed."
     print "\n#################### Testing opencv SVM ####################\n"
     # Testing data must be float32 matrix for the opencv svm.

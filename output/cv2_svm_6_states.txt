@@ -1,10 +1,40 @@
 
+ main() - Enter
+
 		<--- Making sets 0 --->
+
+ make_sets() - Enter
+
+ get_files(anger) - Enter
+
+ get_files(anger) - Exit
+
+ get_files(contempt) - Enter
+
+ get_files(contempt) - Exit
+
+ get_files(happy) - Enter
+
+ get_files(happy) - Exit
+
+ get_files(neutral) - Enter
+
+ get_files(neutral) - Exit
+
+ get_files(sadness) - Enter
+
+ get_files(sadness) - Exit
+
+ get_files(surprise) - Enter
+
+ get_files(surprise) - Exit
+
+ make_sets() - Exit
 
 ################## Training opencv SVM ##################
 
-npArrTrainData.shape = (388L, 136L).
-npArrTrainLabels.shape = (388L,).
+npArrTrainData.shape = (454L, 136L).
+npArrTrainLabels.shape = (454L,).
 Training opencv SVM linear 0 - Started.
 Training opencv SVM linear 0 - Completed.
 
@@ -12,26 +42,28 @@ Saving opencv SVM model to file - Completed.
 
 ################## Testing opencv SVM ###################
 
-npArrTestData.shape = (95L, 136L).
-npArrTestLabels.shape = (95L,).
+npArrTestData.shape = (111L, 136L).
+npArrTestLabels.shape = (111L,).
 Testing opencv SVM linear 0 - Started.
 Testing opencv SVM linear 0 - Completed.
 
 	-> type(npArrTestLabels) = <type 'numpy.ndarray'>
 	-> type(npArrTestLabels[0]) = <type 'numpy.float32'>
-	-> npArrTestLabels.size = 95
+	-> npArrTestLabels.size = 111
 
 	-> type(results) = <type 'numpy.ndarray'>
 	-> type(results[0]) = <type 'numpy.float32'>
-	-> results.size = 95, results.shape = (95L,)
+	-> results.size = 111, results.shape = (111L,)
 
 ################## Check Accuracy #######################
 
 	-> type(mask) = <type 'numpy.ndarray'>
 	-> type(mask[0]) = <type 'numpy.bool_'>
-	-> mask.size = 95, mask.shape = (95L,)
+	-> mask.size = 111, mask.shape = (111L,)
 
-Prediction accuracy = %75.7894736842.
+Prediction accuracy = %69.3693693694.
 
----------------------------------------------------------------
-Mean value of predict accuracy in 1 runs: 75.7895
+--------------------------------------------------------------
+Mean value of predict accuracy in 1 runs: 69.3694
+
+ main() - Exit

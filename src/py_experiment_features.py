@@ -58,8 +58,10 @@ __copyright__ = "Mani Kumar D A"
 dirsep = os.sep  # directory path separator
 curdir = os.curdir  # Relative current directory i.e. '.'
 cwdpath = os.getcwd()  # current working directory full path name
-claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+
 video_capture = cv2.VideoCapture(0)  # Webcam object
+claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+
 frontalFaceDetector = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
     "..{0}input{1}shape_predictor_68_face_landmarks.dat".format(
@@ -158,8 +160,8 @@ def main():
         cv2.imshow("image", frame)  # Display the frame
         # Save the frame when the user presses 's'
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            img_name = "..\\img_samples\\img_cap_{}.jpg".format(
-                dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+            img_name = "..{0}img_samples{1}img_cap_{2}.jpg".format(dirsep,
+                dirsep, dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
             cv2.imwrite(img_name, frame)
         # Exit program when the user presses 'q'
         if cv2.waitKey(1) & 0xFF == ord('q'):

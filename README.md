@@ -6,16 +6,24 @@ Developing using a set of tutorials from the following link:
 [Pual Van Gent](http://www.paulvangent.com/).
 
 ## TO DO
-1. For real time faces i.e. random faces.
-2. Test for noseBridgeAngleOffset is pending.
+1. Keep track of each face in the video/image and display their emotional state.
+2. Monitor the facial state information when no face is detected.
 
 #### Current trainData representation
 ```
-npArrTrainData[316L, 136L] => 316 images with 68 * 2 features i.e 68 mag and 68 ang per image.
-npArrTrainLabels[316L, ] => labels corresponding to the input images.
+Training Data
+-------------
+454 images with 68 * 2 features i.e 68 mag and 68 ang per image.
+npArrTrainData.shape = (454L, 136L).
 
-npArrTestData.shape[78L, 136L]
-npArrTestLabels.shape[78L, ] 
+labels corresponding to the input images.
+npArrTrainLabels.shape = (454L,).
+
+Testing Data
+------------
+111 images with 68 * 2 features i.e 68 mag and 68 ang per image.
+npArrTestData.shape = (111L, 136L).
+npArrTestLabels.shape = (111L,).
 ```
 
-##### Mean value of prediction accuracy in 10 runs: 99.3590 - after correcting for nosebridge points and radians2.
+### Prediction accuracy = 69.3694 % for 6 emotional states.

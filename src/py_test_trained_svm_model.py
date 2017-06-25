@@ -78,26 +78,18 @@ dirsep             = os.sep  # directory path separator
 curdir             = os.curdir  # Relative current directory i.e. '.'
 cwdpath            = os.getcwd()  # current working directory full path name
 
-RAD2DEG_CVT_FACTOR = 180 / math.pi  # Constant to convert radians to degrees.
-emotionsList       = ["anger", "contempt",  # Human facial expression states.
-                      "happy", "neutral", 
-                      "sadness", "surprise"                
-                      ''' 
-                      -> Yet to add `pout`, 
-                      `disgust` and `fear` are excluded
-                      ''']
+emotionsList       = ["anger", "contempt",
+                      "happy", "neutral",
+                      "sadness", "surprise"]  # Human facial expression states
 
-''' --> For future experiments.
-Training for happy, surprise, neutral.
-emotionsList = ["happy", "surprise", "neutral"]
-'''
+''' -> Yet to add `pout`, `disgust` and `fear` are excluded '''
 
-claheObject          = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 frontalFaceDetector  = dlib.get_frontal_face_detector()
 facialShapePredictor = dlib.shape_predictor(
     "..{0}input{1}shape_predictor_68_face_landmarks.dat".format(
         dirsep, dirsep))
 
+RAD2DEG_CVT_FACTOR = 180 / math.pi  # Constant to convert radians to degrees.
 # ---------------------------------------------------------------------------
 # Functions
 # ---------------------------------------------------------------------------
@@ -153,11 +145,15 @@ def get_landmarks(claheImage):
 
 
 def main():
+    """
+    Main function - start of the program.
+    """
+    print "\n main() - Enter"
     svm = cv2.SVM()
+    claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     # ------------------------- Loading opencv SVM ------------------------
     print "\n#################### Loading opencv SVM ####################\n"
-    # Load opencv SVM trained model.
-    svm.load("..\\input\\cv2_svm_happy_surprise.dat")
+    svm.load("..{0}input{1}cv2_svm_6_states.yml".format(dirsep, dirsep))
     print "Loading opencv SVM model from file - Completed."
     # ------------------------- Start Webcam ------------------------------
     video_capture = cv2.VideoCapture(0)  # Webcam object
@@ -166,30 +162,30 @@ def main():
     while True:
         ret, frame = video_capture.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        clahe_image = claheObject.apply(gray)
-        landmarkVectorList = get_landmarks(clahe_image)
+        claheImage = claheObject.apply(gray)
+        landmarkVectorList = get_landmarks(claheImage)
         if landmarkVectorList == "No face detected!":
             print "No face detected!, ret is {}".format(ret)
             break
         # --------------------- Testing opencv SVM ------------------------
-        # print "\n#################### Testing opencv SVM #######\n"
         # Testing data must be float32 matrix for the opencv svm.
         npArrTestData = np.float32(landmarkVectorList)
-
         result = svm.predict(npArrTestData)
-        # ################### Print result ####################
+        # --------------------- Print result ------------------------------
         cv2.putText(frame, "You are {}.".format(emotionsList[int(result)]),
                     (10, 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), thickness=1)
-        cv2.imshow("image", frame)  # Display the frame
+        cv2.imshow("Frame", frame)  # Display the frame
         # Save the frame when the user presses 's'
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            img_name = "..\\img_samples\\img_cap_{}.jpg".format(
-                dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+            img_name = "..{0}img_samples{1}img_cap_{2}.jpg".format(dirsep,
+                dirsep, dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
             cv2.imwrite(img_name, frame)
         # Exit program when the user presses 'q'
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    
+    print "\n main() - Exit"
 
 
 if __name__ == '__main__':
