@@ -99,13 +99,11 @@ def get_landmarks(claheImage):
 
     # For all detected face instances extract the features
     for detectedFace in detectedFaces:
-
-        # Draw Facial Landmarks with the predictor class
-        facialShape = facialShapePredictor(claheImage, detectedFace)
-
         xCoordinatesList = []
         yCoordinatesList = []
-
+        landmarkVectorList = []
+        # Draw Facial Landmarks with the predictor class
+        facialShape = facialShapePredictor(claheImage, detectedFace)
         # Store the X and Y coordinates of landmark points in two lists
         for i in range(0, 68):
             xCoordinatesList.append(facialShape.part(i).x)
@@ -114,19 +112,10 @@ def get_landmarks(claheImage):
         # Get the mean of both axes to determine centre of gravity
         xCoordMean = np.mean(xCoordinatesList)
         yCoordMean = np.mean(yCoordinatesList)
-
-        '''
-        # Mani - removing point coordinates distances
-        # Get distance between each point and the central point in both axes
-        xDistFromCentre = [(x - xCoordMean) for x in xCoordinatesList]
-        yDistFromCentre = [(y - yCoordMean) for y in yCoordinatesList]
-        '''
-
         # If x-coordinates of the set are the same, the angle is 0,
         # catch to prevent 'divide by 0' error in the function
         if xCoordinatesList[27] == xCoordinatesList[30]:
             noseBridgeAngleOffset = 0
-            # radians1 = 1.5708 # 90 deg = 1.5708 rads
         else:
             radians1 = math.atan(
                 (yCoordinatesList[27] - yCoordinatesList[30]) /
@@ -138,29 +127,12 @@ def get_landmarks(claheImage):
             noseBridgeAngleOffset += 90
         else:
             noseBridgeAngleOffset -= 90
-
-        landmarkVectorList = []
-
-        '''
-        # Mani - removing point coordinates distances
-        for xdist, ydist, xcoord, ycoord in zip(xDistFromCentre,  yDistFromCentre,
-                        xCoordinatesList, yCoordinatesList):
-        '''
+            
         for xcoord, ycoord in zip(xCoordinatesList, yCoordinatesList):
-
-            '''
-            # Mani - removing point coordinates distances
-            landmarkVectorList.append(xdist)
-            landmarkVectorList.append(ydist)
-            '''
-
             xyCoordArray = np.asarray((ycoord, xcoord))
             xyCoordMeanArray = np.asarray((yCoordMean, xCoordMean))
-
             pointDistance = np.linalg.norm(xyCoordArray - xyCoordMeanArray)
-
-            # Prevent divide by zero error.
-            denom = (xcoord - xCoordMean)
+            denom = (xcoord - xCoordMean)  # Prevent divide by zero error.
             if denom == 0:
                 radians2 = 1.5708  # 90 deg = 1.5708 rads
             else:
@@ -176,7 +148,7 @@ def get_landmarks(claheImage):
 
 
 # Set the classifier as a opencv svm with SVM_LINEAR kernel
-maxRuns = 10
+maxRuns = 100
 runCount = 0
 svm = cv2.SVM()
 predictionAccuracyList = [0] * maxRuns
@@ -201,7 +173,7 @@ for runCount in range(0, maxRuns):
 
     print "\n#################### Loading opencv SVM ####################\n"
     # Load opencv SVM trained model.
-    svm.load("..{0}input{1}cv2_svm_happy_surprise.dat".format(dirsep,
+    svm.load("..{0}input{1}cv2_svm_6_states.yml".format(dirsep,
                                                               dirsep))
     print "Loading opencv SVM model from file - Completed."
     print "\n#################### Testing opencv SVM ####################\n"

@@ -8,6 +8,8 @@ Developing using a set of tutorials from the following link:
 ## TO DO
 1. Keep track of each face in the video/image and display their emotional state.
 2. Monitor the facial state information when no face is detected.
+3. Remove `contempt`.
+4. Add `pout` and `disgust` faces.
 
 #### Current trainData representation
 ```

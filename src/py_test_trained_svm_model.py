@@ -150,41 +150,66 @@ def main():
     """
     print "\n main() - Enter"
     svm = cv2.SVM()
+    frameText = ""
     claheObject = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     # ------------------------- Loading opencv SVM ------------------------
     print "\n#################### Loading opencv SVM ####################\n"
     svm.load("..{0}input{1}cv2_svm_6_states.yml".format(dirsep, dirsep))
     print "Loading opencv SVM model from file - Completed."
     # ------------------------- Start Webcam ------------------------------
-    video_capture = cv2.VideoCapture(0)  # Webcam object
+    vidCap = cv2.VideoCapture(0)  # Webcam object
+    '''
+    fourcc = cv2.cv.CV_FOURCC('F', 'M', 'P', '4')  # Video writer object.
+    '''
+    vidOutPath = "..{0}video_out{1}vid_cap_{2}.avi".format(
+            dirsep, dirsep, 
+            dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+    # vidWriter = cv2.VideoWriter(vidOutPath, fourcc, 20.0, (640, 480))
+    vidWriter = cv2.VideoWriter(vidOutPath, -1, 5.0, (640,480))
     print "\n##################### Starting Webcam ######################\n"
 
-    while True:
-        ret, frame = video_capture.read()
+    while (vidCap.isOpened()):
+        ret, frame = vidCap.read()
+        if not ret:
+            print "Frame not read, video captured returned {}.".format(ret)
+            break
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         claheImage = claheObject.apply(gray)
         landmarkVectorList = get_landmarks(claheImage)
+ 
         if landmarkVectorList == "No face detected!":
-            print "No face detected!, ret is {}".format(ret)
-            break
-        # --------------------- Testing opencv SVM ------------------------
-        # Testing data must be float32 matrix for the opencv svm.
-        npArrTestData = np.float32(landmarkVectorList)
-        result = svm.predict(npArrTestData)
-        # --------------------- Print result ------------------------------
-        cv2.putText(frame, "You are {}.".format(emotionsList[int(result)]),
-                    (10, 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), thickness=1)
+            frameText = "No face detected!"
+            cv2.putText(frame, "{}".format(frameText), (10, 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 
+                    0.5, (0, 255, 0), thickness=2)
+        else:
+            # -------------------- Testing opencv SVM -----------------------
+            # Testing data must be float32 matrix for the opencv svm.
+            npArrTestData = np.float32(landmarkVectorList)
+            result = svm.predict(npArrTestData)
+            # -------------------- Print result -----------------------------
+            frameText = emotionsList[int(result)]
+            cv2.putText(frame, "You are {}.".format(frameText),
+                        (10, 10),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5, (0, 255, 0), thickness=2)
+        
+        vidWriter.write(frame)  # Write video frame to file.
         cv2.imshow("Frame", frame)  # Display the frame
         # Save the frame when the user presses 's'
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            img_name = "..{0}img_samples{1}img_cap_{2}.jpg".format(dirsep,
-                dirsep, dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
+            img_name = "..{0}img_samples{1}img_cap_{2}.jpg".format(
+            dirsep, dirsep, 
+            dt.datetime.today().strftime("%Y%m%d_%H%M%S"))
             cv2.imwrite(img_name, frame)
+        
         # Exit program when the user presses 'q'
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+                break
     
+    vidCap.release()
+    vidWriter.release()
+    cv2.destroyAllWindows()
     print "\n main() - Exit"
 
 
